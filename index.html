@@ -1225,7 +1225,7 @@ footer {
 
     <div class="sb-section-label">Research</div>
     <a class="nav-link" href="#evidence"><i class="fas fa-flask"></i> Evidence Base</a>
-    <a class="nav-link" href="#policy"><i class="fas fa-landmark"></i> Policy Recs.</a>
+
     <a class="nav-link" href="#sources"><i class="fas fa-book"></i> Sources</a>
   </nav>
 
@@ -1276,10 +1276,6 @@ footer {
       <div class="hero-stat reveal reveal-delay-1">
         <div class="h-stat-val">21K+</div>
         <div class="h-stat-lbl">RRB Branches · ₹6.79L Cr Deposits</div>
-      </div>
-      <div class="hero-stat reveal reveal-delay-2">
-        <div class="h-stat-val">7.3%</div>
-        <div class="h-stat-lbl">Gross NPA Ratio — 2× SCB Average</div>
       </div>
       <div class="hero-stat reveal reveal-delay-3">
         <div class="h-stat-val">97K</div>
@@ -1409,8 +1405,8 @@ footer {
     <div class="gaps-grid">
       <div class="gap-card gc-1 reveal">
         <div class="gap-icon gi-1"><i class="fas fa-wifi"></i></div>
-        <h3>Connectivity Gap</h3>
-        <p>Inadequate physical and digital network reach. Branch locations with unreliable internet connectivity cannot benefit from cloud-delivered AI tools, real-time CBS monitoring, or API-based credit bureau queries.</p>
+        <h3>Infrastructure Gap</h3>
+        <p>Inadequate physical infrastructure, unreliable digital connectivity, and legacy technology systems. Branch locations lack stable electricity, reliable internet access, and modern hardware. Absence of integrated core banking infrastructure prevents implementation of cloud-delivered AI tools, real-time monitoring, and API-based services.</p>
         <span class="gap-tag gt-1">Infrastructure Layer</span>
       </div>
       <div class="gap-card gc-2 reveal reveal-delay-1">
@@ -1452,36 +1448,6 @@ footer {
     <p class="sec-lead reveal">CBS adoption and utilisation across RRBs and DCCBs reveals a stark distinction between technical deployment and operational integration — the gap between going live and actually leveraging digital capabilities.</p>
 
     <div class="infra-grid">
-      <!-- Card 1 -->
-      <div class="infra-card reveal">
-        <div class="infra-card-hd">
-          <i class="fas fa-chart-pie"></i>
-          <h3>CBS Utilisation Across Institution Types</h3>
-        </div>
-        <div class="infra-card-body">
-          <div class="pb-row">
-            <div class="pb-label"><span>RRB — Full CBS Deployment</span><span>~85%</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:85%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>RRB — Analytics Modules Active</span><span>~38%</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:38%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>DCCB — CBS Penetration</span><span>~55%</span></div>
-            <div class="pb-track"><div class="pb-fill amber-fill" style="width:55%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>DCCB — Branch-level Integration</span><span>~30%</span></div>
-            <div class="pb-track"><div class="pb-fill amber-fill" style="width:30%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>PACS — CBS Connectivity</span><span>~15%</span></div>
-            <div class="pb-track"><div class="pb-fill red-fill" style="width:15%"></div></div>
-          </div>
-        </div>
-      </div>
-
       <!-- Card 2 -->
       <div class="infra-card reveal reveal-delay-1">
         <div class="infra-card-hd">
@@ -1501,33 +1467,6 @@ footer {
               <tr><td>IVR Voice Banking</td><td>Nascent</td><td>Minimal</td></tr>
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="infra-card reveal">
-        <div class="infra-card-hd">
-          <i class="fas fa-exclamation-triangle"></i>
-          <h3>CBS Platform Fragmentation — Cooperative Banks</h3>
-        </div>
-        <div class="infra-card-body">
-          <div class="pb-row">
-            <div class="pb-label"><span>Maharashtra, Gujarat, Karnataka</span><span>High CBS</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:78%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>Andhra Pradesh, Tamil Nadu</span><span>Moderate</span></div>
-            <div class="pb-track"><div class="pb-fill" style="width:62%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>Uttar Pradesh, Bihar, MP</span><span>Low</span></div>
-            <div class="pb-track"><div class="pb-fill amber-fill" style="width:28%"></div></div>
-          </div>
-          <div class="pb-row">
-            <div class="pb-label"><span>NE States &amp; Tribal Districts</span><span>Very Low</span></div>
-            <div class="pb-track"><div class="pb-fill red-fill" style="width:14%"></div></div>
-          </div>
-          <p style="font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6">Fragmentation impairs interoperability, complicates regulatory data collection, and significantly raises the cost of integrating AI tools that require clean, structured data from core banking systems.</p>
         </div>
       </div>
 
@@ -1622,16 +1561,20 @@ footer {
       <!-- App 3: PSL Compliance -->
       <div class="app-card ac-3 reveal reveal-delay-2">
         <div class="app-icon" style="background:rgba(0,184,212,0.15)"><i class="fas fa-tasks" style="color:var(--cyan)"></i></div>
-        <h3>RPA for PSL Compliance & XBRL Reporting</h3>
-        <p>Automated classification of loan accounts into PSL categories using RBI Master Direction rules applied to CBS data, with direct pipeline to XBRL submission — reducing reporting cycles from weeks to hours.</p>
-        <div class="app-card-tags">
-          <span class="app-tag">Rule Engine + ML</span>
-          <span class="app-tag">XBRL Auto-submit</span>
-          <span class="app-tag">Real-time PSL Dashboard</span>
-        </div>
-        <div class="app-evidence" style="background:rgba(0,184,212,0.1);color:rgba(255,255,255,0.65)">
-          <i class="fas fa-lightbulb" style="color:var(--cyan)"></i> McKinsey Global Institute (2017): RPA delivers 25–40% reduction in total back-office processing costs in financial services. For rural institutions, savings likely at the higher end.
-        </div>
+        <h3>GenAI Voice Banking in Regional Dialects</h3>
+          <p>
+          Voice-first banking interface enabling farmers and rural users to interact with banking services using native dialects (Awadhi, Bundeli, Marathi variants, etc.). Converts speech → intent → transaction via multilingual ASR and CBS integration — eliminating literacy and UI barriers.
+          </p>
+
+          <div class="app-card-tags">
+            <span class="app-tag">Dialect ASR + NLP</span>
+            <span class="app-tag">Offline Voice Engine</span>
+            <span class="app-tag">CBS Voice Integration</span>
+          </div>
+
+          <div class="app-evidence" style="background:rgba(139,92,246,0.1);color:rgba(255,255,255,0.65)">
+          💡<i class="fas fa-users" style="color:#c4b5fd"></i> AI4Bharat & Vakyansh: Open-source ASR models trained on 10k+ hours of Indic speech across 22+ languages enable accurate rural voice interfaces and dialect adaptation.
+          </div>
       </div>
 
       <!-- App 4: Customer Profiling -->
@@ -1747,24 +1690,6 @@ footer {
     </div>
 
     <div class="charts-grid">
-      <!-- Chart 1: NPA Comparison -->
-      <div class="chart-card reveal">
-        <div class="chart-card-hd">
-          <h4>NPA Ratio Comparison — RRBs vs SCBs</h4>
-          <p>Gross NPA % across bank categories, March 2023 · Source: RBI, Report on Trend & Progress 2022-23</p>
-        </div>
-        <div class="chart-wrap"><canvas id="npaChart"></canvas></div>
-      </div>
-
-      <!-- Chart 2: Credit-Deposit Ratio -->
-      <div class="chart-card reveal reveal-delay-1">
-        <div class="chart-card-hd">
-          <h4>Credit-Deposit Ratio Analysis</h4>
-          <p>C/D ratio across bank types vs national average · Source: RBI, 2022-23</p>
-        </div>
-        <div class="chart-wrap"><canvas id="cdChart"></canvas></div>
-      </div>
-
       <!-- Chart 3: FI Index Progress (wide) -->
       <div class="chart-card wide reveal">
         <div class="chart-card-hd">
@@ -1865,7 +1790,6 @@ footer {
       <div class="phase-block ph-1">
         <div class="phase-meta">
           <div class="phase-number">Phase 01</div>
-          <div class="phase-time">0 – 18 Months</div>
           <div class="phase-name">Foundation & Automation</div>
         </div>
         <div class="phase-dot"></div>
@@ -1893,7 +1817,6 @@ footer {
       <div class="phase-block ph-2">
         <div class="phase-meta">
           <div class="phase-number">Phase 02</div>
-          <div class="phase-time">18 – 42 Months</div>
           <div class="phase-name">ML Decision Support</div>
         </div>
         <div class="phase-dot"></div>
@@ -1921,7 +1844,6 @@ footer {
       <div class="phase-block ph-3">
         <div class="phase-meta">
           <div class="phase-number">Phase 03</div>
-          <div class="phase-time">42 – 72 Months</div>
           <div class="phase-name">Integrated AI Ecosystem</div>
         </div>
         <div class="phase-dot"></div>
@@ -2098,60 +2020,7 @@ footer {
 <!-- ══════════════════════════════════════════════════════
      SECTION 12: POLICY RECOMMENDATIONS
 ══════════════════════════════════════════════════════ -->
-<section class="section" id="policy">
-  <div class="sec-inner">
-    <div class="sec-tag reveal"><i class="fas fa-landmark"></i> Policy Framework</div>
-    <h2 class="sec-title reveal">Policy <span class="accent">Recommendations</span></h2>
-    <div class="divider reveal"></div>
-    <p class="sec-lead reveal">AI adoption in rural banking is not merely an efficiency measure — it is a structural instrument for deepening financial inclusion and strengthening the institutional foundations of last-mile credit delivery.</p>
 
-    <div class="policy-grid">
-      <div class="policy-card reveal">
-        <span class="stakeholder" style="background:rgba(212,130,10,0.1);color:var(--amber)"><i class="fas fa-university"></i> Reserve Bank of India</span>
-        <h4>Regulatory Enablement</h4>
-        <ul class="rec-list">
-          <li>Issue specific guidance on explainability standards for AI-assisted credit decisions in rural and cooperative banking — defining minimum SHAP / attribution requirements</li>
-          <li>Extend Account Aggregator framework guidance to cooperative banks and RRBs with phased compliance timelines aligned to CBS maturity</li>
-          <li>Establish a regulatory sandbox specifically for AI-powered rural credit applications, enabling evidence generation under supervisory oversight</li>
-          <li>Mandate XBRL-format reporting through automated CBS pipelines for RRBs — reducing manual compliance burden and enabling AI-based regulatory analytics</li>
-        </ul>
-      </div>
-
-      <div class="policy-card reveal reveal-delay-1">
-        <span class="stakeholder" style="background:rgba(0,168,107,0.1);color:var(--emerald)"><i class="fas fa-leaf"></i> NABARD</span>
-        <h4>Institutional Capacity Building</h4>
-        <ul class="rec-list">
-          <li>Scale technology upgrade schemes specifically targeting CBS utilisation depth — not just deployment coverage — with data quality metrics as disbursement conditions</li>
-          <li>Establish a shared AI services platform accessible to DCCBs and smaller RRBs, providing cloud-delivered ML tools without requiring in-house data science teams</li>
-          <li>Fund structured digital literacy programme for branch-level staff across sponsored cooperative institutions — AI tools require human operators who can interpret outputs</li>
-          <li>Develop a rural banking AI implementation playbook with standard operating procedures for EWS, credit scoring, and compliance automation deployment</li>
-        </ul>
-      </div>
-
-      <div class="policy-card reveal">
-        <span class="stakeholder" style="background:rgba(0,184,212,0.1);color:var(--cyan)"><i class="fas fa-rupee-sign"></i> Ministry of Finance / DFS</span>
-        <h4>Financial & Structural Support</h4>
-        <ul class="rec-list">
-          <li>Create dedicated AI technology capital expenditure funding stream for RRBs, with conditions requiring data quality remediation as prerequisite disbursement criterion</li>
-          <li>Direct sponsor banks to extend not just CBS platforms but analytics capabilities, AI model libraries, and data science support to their RRB affiliates</li>
-          <li>Harmonise cooperative bank regulatory oversight between RBI and state registrars to enable uniform technology adoption mandates at scale</li>
-          <li>Ensure PM-KISAN, PMFBY, and MGNREGS databases have accessible, standardised API interfaces usable by lending institutions for credit enrichment</li>
-        </ul>
-      </div>
-
-      <div class="policy-card reveal reveal-delay-1">
-        <span class="stakeholder" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="fas fa-microchip"></i> Technology Ecosystem</span>
-        <h4>AI Infrastructure Development</h4>
-        <ul class="rec-list">
-          <li>AI4Bharat (IIT Madras) to prioritise coverage of tribal and regional language models for BC agent voice interface deployment in underserved geographies</li>
-          <li>ISRO / NRSC to formalize agricultural lending data access API for NDVI satellite indices — currently ad-hoc — enabling standardised integration into credit scoring pipelines</li>
-          <li>UIDAI to extend Aadhaar-based e-KYC and face authentication specifically for rural bank loan origination at low data bandwidth environments</li>
-          <li>Credit bureaus (CIBIL, CRIF) to develop rural-sector specific thin-file borrower products incorporating alternative data sources mandated by RBI framework</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ══════════════════════════════════════════════════════
      SECTION 13: SOURCES
@@ -2691,52 +2560,6 @@ const chartDefaults = {
 
 Chart.defaults.font.family = chartDefaults.font.family;
 Chart.defaults.color = chartDefaults.color;
-
-// Chart 1: NPA Comparison
-new Chart(document.getElementById('npaChart'), {
-  type: 'bar',
-  data: {
-    labels: ['RRBs', 'DCCBs (est.)', 'Public Sector Banks', 'Private Sector Banks', 'SCBs (National Avg)'],
-    datasets: [{
-      label: 'Gross NPA %',
-      data: [7.3, 9.2, 5.0, 2.8, 3.9],
-      backgroundColor: ['#e55', '#ff7070', '#f5a623', '#00a86b', '#00b8d4'],
-      borderRadius: 6,
-      borderWidth: 0,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true, max: 12, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(0,0,0,0.05)' } },
-      x: { grid: { display: false } }
-    }
-  }
-});
-
-// Chart 2: C/D Ratio
-new Chart(document.getElementById('cdChart'), {
-  type: 'bar',
-  data: {
-    labels: ['RRBs', 'Cooperative Banks', 'Public Sector Banks', 'Private Sector Banks', 'National Avg SCBs'],
-    datasets: [{
-      label: 'Credit-Deposit Ratio %',
-      data: [62, 58, 73, 88, 75],
-      backgroundColor: ['rgba(0,168,107,0.7)', 'rgba(212,130,10,0.7)', 'rgba(0,184,212,0.7)', 'rgba(139,92,246,0.7)', 'rgba(107,114,128,0.7)'],
-      borderRadius: 6, borderWidth: 0,
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(0,0,0,0.05)' } },
-      y: { grid: { display: false } }
-    }
-  }
-});
 
 // Chart 3: FI-Index Trajectory
 new Chart(document.getElementById('fiChart'), {
