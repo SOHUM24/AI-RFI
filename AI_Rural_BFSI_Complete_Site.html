@@ -1,0 +1,2829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AI-Led Transformation in Rural Financial Inclusion — BFSI Research Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,600;0,6..72,800;1,6..72,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --forest: #0b2318;
+  --forest-mid: #163d28;
+  --forest-light: #1f5438;
+  --emerald: #00a86b;
+  --emerald-bright: #00d48a;
+  --emerald-pale: #e0f5ec;
+  --amber: #d4820a;
+  --amber-bright: #f5a623;
+  --amber-pale: #fef6e0;
+  --indigo: #1a2f5c;
+  --indigo-mid: #223870;
+  --cyan: #00b8d4;
+  --cyan-pale: #e0f7ff;
+  --cream: #f7f2eb;
+  --warm-white: #fdfaf5;
+  --sand: #ede5d8;
+  --text-dark: #0f1c12;
+  --text-mid: #2d4a35;
+  --text-muted: #6a8475;
+  --text-light: rgba(255,255,255,0.72);
+  --text-light-dim: rgba(255,255,255,0.45);
+  --border-light: rgba(255,255,255,0.1);
+  --border-dark: #d5c8b4;
+  --sidebar-w: 260px;
+  --touch-target: 52px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.18);
+  --shadow-glow: 0 0 40px rgba(0,168,107,0.25);
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; -webkit-font-smoothing:antialiased; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text-dark); overflow-x:hidden; }
+
+/* ═══ SCROLLBAR ═══ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--forest); }
+::-webkit-scrollbar-thumb { background: var(--emerald); border-radius: 3px; }
+
+/* ═══ PROGRESS BAR ═══ */
+#scroll-progress {
+  position:fixed; top:0; left:0; height:3px; z-index:9999;
+  background:linear-gradient(90deg, var(--emerald-bright), var(--amber-bright), var(--cyan));
+  width:0%; transition:width 0.15s;
+  box-shadow:0 0 12px rgba(0,212,138,0.7);
+}
+
+/* ═══ SIDEBAR ═══ */
+#sidebar {
+  position:fixed; left:0; top:0; bottom:0;
+  width:var(--sidebar-w); background:var(--forest);
+  z-index:1000; display:flex; flex-direction:column;
+  box-shadow:4px 0 24px rgba(0,0,0,0.3);
+  overflow-y:auto;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+.sb-brand {
+  padding:28px 24px 20px;
+  border-bottom:1px solid var(--border-light);
+}
+
+.sb-brand-icon {
+  width:48px; height:48px; background:linear-gradient(135deg,var(--emerald),var(--forest-light));
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-size:22px; margin-bottom:14px; box-shadow:var(--shadow-glow);
+}
+
+.sb-brand h2 {
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  color:white; line-height:1.4; letter-spacing:0.01em;
+}
+
+.sb-brand p {
+  font-size:10px; color:var(--text-light-dim); margin-top:6px;
+  font-family:'DM Sans',sans-serif; letter-spacing:0.06em; text-transform:uppercase;
+}
+
+.sb-section-label {
+  font-size:9px; font-weight:700; letter-spacing:0.14em;
+  text-transform:uppercase; color:var(--text-light-dim);
+  padding:20px 24px 6px;
+}
+
+.sb-nav { padding:8px 0; flex:1; }
+
+.nav-link {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 24px; cursor:pointer;
+  font-size:12.5px; color:var(--text-light);
+  transition:all 0.25s; border-left:3px solid transparent;
+  text-decoration:none; min-height:var(--touch-target);
+  font-family:'DM Sans',sans-serif; font-weight:400;
+}
+
+.nav-link i { width:18px; text-align:center; font-size:13px; opacity:0.75; flex-shrink:0; }
+
+.nav-link:hover, .nav-link.active {
+  color:white; background:rgba(0,168,107,0.14);
+  border-left-color:var(--emerald-bright);
+}
+
+.nav-link.active { font-weight:600; }
+.nav-link.active i { opacity:1; }
+
+.sb-footer {
+  padding:16px 24px 20px;
+  border-top:1px solid var(--border-light);
+  font-size:10px; color:var(--text-light-dim); line-height:1.6;
+}
+
+/* ═══ MOBILE SIDEBAR TOGGLE ═══ */
+#sidebar-toggle {
+  display:none; position:fixed; bottom:24px; right:24px;
+  width:56px; height:56px; background:var(--emerald);
+  border-radius:16px; z-index:1100; cursor:pointer; border:none;
+  color:white; font-size:22px; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(0,168,107,0.5);
+}
+
+/* ═══ MAIN ═══ */
+#main { margin-left:var(--sidebar-w); }
+
+/* ═══ SECTIONS ═══ */
+.section { position:relative; }
+
+.sec-inner {
+  max-width:1180px; padding:80px 64px;
+}
+
+/* ═══ SECTION HEADER PATTERN ═══ */
+.sec-tag {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:10px; font-weight:700; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--emerald);
+  margin-bottom:12px;
+}
+
+.sec-title {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(28px, 3.2vw, 44px); font-weight:800;
+  line-height:1.15; margin-bottom:12px;
+  color:var(--text-dark);
+}
+
+.sec-title .accent { color:var(--emerald); }
+.sec-title .accent-amber { color:var(--amber); }
+
+.sec-lead {
+  font-size:17px; color:var(--text-mid);
+  max-width:680px; line-height:1.75; margin-bottom:48px;
+  font-weight:300;
+}
+
+.divider {
+  width:52px; height:4px;
+  background:linear-gradient(90deg,var(--emerald),var(--amber-bright));
+  border-radius:2px; margin:14px 0 36px;
+}
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal {
+  opacity:0; transform:translateY(28px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.1s; }
+.reveal-delay-2 { transition-delay:0.2s; }
+.reveal-delay-3 { transition-delay:0.3s; }
+.reveal-delay-4 { transition-delay:0.4s; }
+
+/* ═══════════════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════════════ */
+#hero {
+  min-height:100vh; background:var(--forest);
+  display:flex; flex-direction:column; justify-content:center;
+  padding:80px 64px; position:relative; overflow:hidden;
+}
+
+.hero-bg-pattern {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,168,107,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,168,107,0.04) 1px, transparent 1px);
+  background-size:56px 56px;
+  animation:bgDrift 30s linear infinite;
+}
+
+@keyframes bgDrift {
+  0% { background-position:0 0; }
+  100% { background-position:56px 56px; }
+}
+
+.hero-orbs { position:absolute; inset:0; pointer-events:none; }
+
+.orb {
+  position:absolute; border-radius:50%;
+  filter:blur(80px); pointer-events:none;
+  animation:orbPulse 8s ease-in-out infinite;
+}
+
+.orb-1 { width:500px; height:500px; background:rgba(0,168,107,0.12); top:-150px; right:-100px; animation-delay:0s; }
+.orb-2 { width:350px; height:350px; background:rgba(212,130,10,0.1); bottom:-80px; left:15%; animation-delay:-3s; }
+.orb-3 { width:280px; height:280px; background:rgba(0,184,212,0.08); top:30%; right:30%; animation-delay:-5s; }
+
+@keyframes orbPulse {
+  0%,100% { transform:scale(1); opacity:0.8; }
+  50% { transform:scale(1.15); opacity:1; }
+}
+
+.hero-content { position:relative; z-index:2; max-width:780px; }
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(0,168,107,0.15); border:1px solid rgba(0,168,107,0.35);
+  color:var(--emerald-bright); padding:8px 18px; border-radius:100px;
+  font-size:11px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:28px;
+}
+
+.hero-eyebrow .dot { width:6px; height:6px; background:var(--emerald-bright); border-radius:50%; animation:blink 2s ease-in-out infinite; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+#hero h1 {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(36px, 4.5vw, 66px); font-weight:800;
+  color:white; line-height:1.1; margin-bottom:24px;
+  letter-spacing:-0.01em;
+}
+
+#hero h1 .hl { color:var(--emerald-bright); }
+#hero h1 .hl-amber { color:var(--amber-bright); }
+
+.hero-sub {
+  font-size:17px; color:rgba(255,255,255,0.6);
+  max-width:620px; line-height:1.75; margin-bottom:48px;
+  font-weight:300;
+}
+
+.hero-stats-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:16px; max-width:860px; margin-bottom:40px;
+}
+
+.hero-stat {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r-md); padding:22px 18px;
+  backdrop-filter:blur(12px);
+  transition:background 0.3s, border-color 0.3s;
+  cursor:default;
+}
+
+.hero-stat:hover {
+  background:rgba(0,168,107,0.1);
+  border-color:rgba(0,168,107,0.4);
+}
+
+.h-stat-val {
+  font-family:'Newsreader',serif;
+  font-size:32px; font-weight:800; color:var(--emerald-bright);
+  line-height:1; margin-bottom:6px;
+}
+
+.h-stat-lbl { font-size:11px; color:rgba(255,255,255,0.5); line-height:1.4; }
+
+.hero-cta-row { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+
+.btn-primary {
+  display:inline-flex; align-items:center; gap:9px;
+  background:var(--emerald); color:white;
+  padding:14px 26px; border-radius:var(--r-sm);
+  font-weight:600; font-size:14px; cursor:pointer;
+  border:none; text-decoration:none; font-family:'DM Sans',sans-serif;
+  transition:background 0.25s, transform 0.25s, box-shadow 0.25s;
+  min-height:var(--touch-target);
+}
+
+.btn-primary:hover { background:var(--emerald-bright); transform:translateY(-2px); box-shadow:var(--shadow-glow); }
+
+.btn-outline {
+  display:inline-flex; align-items:center; gap:9px;
+  background:transparent; color:rgba(255,255,255,0.75);
+  padding:14px 24px; border-radius:var(--r-sm);
+  font-weight:500; font-size:14px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.2); text-decoration:none;
+  font-family:'DM Sans',sans-serif;
+  transition:all 0.25s; min-height:var(--touch-target);
+}
+
+.btn-outline:hover { border-color:rgba(255,255,255,0.5); color:white; background:rgba(255,255,255,0.07); }
+
+/* Hero SVG Visualization */
+.hero-visual {
+  position:absolute; right:64px; top:50%;
+  transform:translateY(-50%); width:320px; height:320px;
+  opacity:0.65; pointer-events:none;
+}
+
+.node-pulse {
+  animation:nodePulse 3s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+  0%,100%{ r:8px; opacity:0.8; }
+  50%{ r:11px; opacity:1; }
+}
+
+.link-flow {
+  stroke-dasharray:8 4;
+  animation:linkAnim 3s linear infinite;
+}
+
+@keyframes linkAnim { to { stroke-dashoffset:-24; } }
+
+/* ═══════════════════════════════════════════════
+   SECTION — LANDSCAPE (dark forest)
+═══════════════════════════════════════════════ */
+#landscape {
+  background:var(--forest-mid);
+  padding:0;
+}
+
+#landscape .sec-title { color:white; }
+#landscape .sec-lead { color:var(--text-light); }
+#landscape .sec-tag { color:var(--emerald-bright); }
+
+/* ═══ KPI CARDS ═══ */
+.kpi-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px; margin-bottom:48px;
+}
+
+.kpi-card {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r-lg); padding:28px 24px;
+  transition:all 0.35s;
+  position:relative; overflow:hidden;
+}
+
+.kpi-card::after {
+  content:''; position:absolute;
+  inset:0; border-radius:var(--r-lg);
+  background:linear-gradient(135deg,rgba(0,168,107,0.06),transparent);
+  opacity:0; transition:opacity 0.35s;
+}
+
+.kpi-card:hover { transform:translateY(-4px); border-color:rgba(0,168,107,0.4); }
+.kpi-card:hover::after { opacity:1; }
+
+.kpi-icon {
+  width:48px; height:48px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; margin-bottom:18px;
+}
+
+.kpi-icon.emerald { background:rgba(0,168,107,0.2); color:var(--emerald-bright); }
+.kpi-icon.amber { background:rgba(212,130,10,0.2); color:var(--amber-bright); }
+.kpi-icon.cyan { background:rgba(0,184,212,0.2); color:var(--cyan); }
+.kpi-icon.white { background:rgba(255,255,255,0.12); color:white; }
+
+.kpi-num {
+  font-family:'Newsreader',serif;
+  font-size:40px; font-weight:800; color:white; line-height:1;
+}
+
+.kpi-unit { font-size:15px; font-weight:400; color:var(--text-light-dim); }
+.kpi-desc { font-size:13px; color:var(--text-light); margin-top:8px; line-height:1.6; }
+.kpi-src { font-size:10px; color:var(--text-light-dim); margin-top:12px; font-style:italic; }
+
+/* ═══ ALERT BANNER ═══ */
+.alert-banner {
+  background:linear-gradient(135deg,rgba(212,130,10,0.2),rgba(212,130,10,0.08));
+  border:1px solid rgba(212,130,10,0.4); border-radius:var(--r-md);
+  padding:24px 28px; display:flex; align-items:flex-start; gap:18px;
+}
+
+.alert-banner i { font-size:26px; color:var(--amber-bright); flex-shrink:0; margin-top:2px; }
+.alert-banner h3 { font-family:'Syne',sans-serif; font-size:17px; color:white; margin-bottom:8px; }
+.alert-banner p { font-size:13.5px; color:var(--text-light); line-height:1.65; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — GAP TAXONOMY (light cream)
+═══════════════════════════════════════════════ */
+#gaps { background:var(--warm-white); }
+
+.gaps-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
+}
+
+.gap-card {
+  background:white; border:1.5px solid var(--border-dark);
+  border-radius:var(--r-lg); padding:26px 20px;
+  cursor:pointer; transition:all 0.35s;
+  position:relative; overflow:hidden;
+}
+
+.gap-card-top { display:flex; flex-direction:column; }
+
+.gap-card::before {
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:3px;
+  opacity:0; transition:opacity 0.35s;
+}
+
+.gc-1::before { background:var(--emerald); }
+.gc-2::before { background:var(--amber); }
+.gc-3::before { background:var(--cyan); }
+.gc-4::before { background:#8b5cf6; }
+.gc-5::before { background:#e55; }
+
+.gap-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-md); border-color:transparent; }
+.gap-card:hover::before { opacity:1; }
+
+.gap-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; margin-bottom:18px;
+}
+
+.gi-1 { background:var(--emerald-pale); color:var(--emerald); }
+.gi-2 { background:var(--amber-pale); color:var(--amber); }
+.gi-3 { background:var(--cyan-pale); color:var(--cyan); }
+.gi-4 { background:rgba(139,92,246,0.1); color:#8b5cf6; }
+.gi-5 { background:rgba(229,85,85,0.1); color:#e55; }
+
+.gap-card h3 {
+  font-family:'Syne',sans-serif;
+  font-size:14.5px; font-weight:700; color:var(--text-dark);
+  margin-bottom:10px;
+}
+
+.gap-card p { font-size:12.5px; color:var(--text-muted); line-height:1.65; }
+
+.gap-tag {
+  display:inline-block; margin-top:14px;
+  font-size:10px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; padding:4px 10px; border-radius:100px;
+}
+
+.gt-1 { background:var(--emerald-pale); color:var(--emerald); }
+.gt-2 { background:var(--amber-pale); color:var(--amber); }
+.gt-3 { background:var(--cyan-pale); color:var(--cyan); }
+.gt-4 { background:rgba(139,92,246,0.1); color:#8b5cf6; }
+.gt-5 { background:rgba(229,85,85,0.1); color:#e55; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — CBS INFRASTRUCTURE
+═══════════════════════════════════════════════ */
+#infrastructure { background:var(--cream); }
+
+.infra-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.infra-card {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow-sm);
+}
+
+.infra-card-hd {
+  padding:20px 24px; border-bottom:1px solid var(--sand);
+  display:flex; align-items:center; gap:12px;
+  background:var(--warm-white);
+}
+
+.infra-card-hd i { font-size:18px; color:var(--emerald); }
+.infra-card-hd h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text-dark); }
+
+.infra-card-body { padding:24px; }
+
+.pb-row { margin-bottom:18px; }
+
+.pb-label {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:12.5px; margin-bottom:7px;
+  color:var(--text-muted);
+}
+
+.pb-label span:last-child { font-weight:600; color:var(--text-dark); }
+
+.pb-track { height:9px; background:var(--sand); border-radius:100px; overflow:hidden; }
+
+.pb-fill {
+  height:100%; border-radius:100px;
+  background:linear-gradient(90deg, var(--emerald), var(--emerald-bright));
+  width:0%; transition:width 1.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+.pb-fill.amber-fill {
+  background:linear-gradient(90deg, var(--amber), var(--amber-bright));
+}
+
+.pb-fill.red-fill { background:linear-gradient(90deg,#e55,#ff7070); }
+
+/* Two-column table */
+.data-table {
+  width:100%; border-collapse:collapse;
+  font-size:13px;
+}
+
+.data-table th {
+  background:var(--warm-white); color:var(--text-muted);
+  font-size:10px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; padding:12px 16px; text-align:left;
+  border-bottom:1px solid var(--sand);
+}
+
+.data-table td {
+  padding:11px 16px; border-bottom:1px solid var(--sand);
+  color:var(--text-mid); vertical-align:top; line-height:1.5;
+}
+
+.data-table td:first-child { font-weight:500; color:var(--text-dark); }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:rgba(0,168,107,0.03); }
+
+/* ═══════════════════════════════════════════════
+   SECTION — AI APPLICATIONS (dark)
+═══════════════════════════════════════════════ */
+#applications {
+  background:var(--forest);
+  padding:0;
+}
+
+#applications .sec-title { color:white; }
+#applications .sec-lead { color:var(--text-light); }
+#applications .sec-tag { color:var(--emerald-bright); }
+
+.app-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.app-card {
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--r-lg); padding:28px 22px;
+  cursor:pointer; transition:all 0.4s;
+  position:relative; overflow:hidden;
+}
+
+.app-card::before {
+  content:''; position:absolute;
+  inset:0; border-radius:var(--r-lg);
+  opacity:0; transition:opacity 0.4s;
+}
+
+.ac-1::before { background:radial-gradient(circle at 0 0,rgba(0,168,107,0.12),transparent 70%); }
+.ac-2::before { background:radial-gradient(circle at 0 0,rgba(212,130,10,0.12),transparent 70%); }
+.ac-3::before { background:radial-gradient(circle at 0 0,rgba(0,184,212,0.12),transparent 70%); }
+.ac-4::before { background:radial-gradient(circle at 0 0,rgba(139,92,246,0.12),transparent 70%); }
+.ac-5::before { background:radial-gradient(circle at 0 0,rgba(239,68,68,0.12),transparent 70%); }
+.ac-6::before { background:radial-gradient(circle at 0 0,rgba(236,72,153,0.12),transparent 70%); }
+.ac-7::before { background:radial-gradient(circle at 0 0,rgba(245,158,11,0.12),transparent 70%); }
+.ac-8::before { background:radial-gradient(circle at 0 0,rgba(52,211,153,0.12),transparent 70%); }
+
+.app-card:hover { transform:translateY(-6px); border-color:rgba(255,255,255,0.18); box-shadow:0 20px 50px rgba(0,0,0,0.3); }
+.app-card:hover::before { opacity:1; }
+
+.app-icon {
+  width:54px; height:54px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px; margin-bottom:20px;
+  position:relative; z-index:1;
+}
+
+.app-card h3 {
+  font-family:'Syne',sans-serif;
+  font-size:15px; font-weight:700; color:white;
+  margin-bottom:10px; line-height:1.3;
+  position:relative; z-index:1;
+}
+
+.app-card p {
+  font-size:12.5px; color:rgba(255,255,255,0.55);
+  line-height:1.7; position:relative; z-index:1;
+}
+
+.app-card-tags {
+  display:flex; flex-wrap:wrap; gap:6px; margin-top:16px;
+  position:relative; z-index:1;
+}
+
+.app-tag {
+  font-size:10px; padding:3px 9px; border-radius:100px;
+  font-weight:600; letter-spacing:0.04em;
+  border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.55);
+}
+
+.app-evidence {
+  margin-top:16px; padding:12px 14px;
+  border-radius:var(--r-sm);
+  font-size:11.5px; line-height:1.6;
+  position:relative; z-index:1;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION — DATA VISUALIZATIONS / CHARTS
+═══════════════════════════════════════════════ */
+#analytics { background:var(--warm-white); }
+
+.charts-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:24px;
+}
+
+.chart-card {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-lg); padding:28px;
+  box-shadow:var(--shadow-sm);
+}
+
+.chart-card.wide { grid-column:span 2; }
+
+.chart-card-hd { margin-bottom:20px; }
+.chart-card-hd h4 { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; color:var(--text-dark); }
+.chart-card-hd p { font-size:12px; color:var(--text-muted); margin-top:4px; }
+
+.chart-wrap { position:relative; height:240px; }
+.chart-wrap.tall { height:300px; }
+
+/* Mini stat cards inside analytics */
+.mini-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+
+.mini-stat {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-md); padding:20px 16px;
+  box-shadow:var(--shadow-sm);
+}
+
+.mini-stat .ms-num {
+  font-family:'Newsreader',serif;
+  font-size:30px; font-weight:800; line-height:1; color:var(--text-dark);
+}
+
+.mini-stat .ms-label { font-size:11px; color:var(--text-muted); margin-top:6px; line-height:1.4; }
+.mini-stat .ms-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:100px; margin-top:8px; display:inline-block; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — IMPACT DASHBOARD
+═══════════════════════════════════════════════ */
+#impact {
+  background:linear-gradient(135deg,var(--indigo) 0%, var(--indigo-mid) 100%);
+  overflow:hidden; position:relative;
+}
+
+#impact::before {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(circle at 20% 50%,rgba(0,168,107,0.12) 0%, transparent 50%),
+                   radial-gradient(circle at 80% 50%,rgba(0,184,212,0.08) 0%, transparent 50%);
+}
+
+#impact .sec-title { color:white; position:relative; z-index:1; }
+#impact .sec-lead { color:rgba(255,255,255,0.65); position:relative; z-index:1; }
+#impact .sec-tag { color:var(--emerald-bright); position:relative; z-index:1; }
+
+.impact-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:20px; position:relative; z-index:1;
+}
+
+.impact-card {
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:var(--r-lg); padding:28px 22px;
+  text-align:center;
+  transition:all 0.3s;
+}
+
+.impact-card:hover { background:rgba(255,255,255,0.11); transform:translateY(-4px); }
+
+.impact-num {
+  font-family:'Newsreader',serif;
+  font-size:48px; font-weight:800; line-height:1;
+  margin-bottom:8px;
+}
+
+.impact-label { font-size:13px; color:rgba(255,255,255,0.6); line-height:1.5; }
+.impact-source { font-size:10px; color:rgba(255,255,255,0.35); margin-top:10px; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — ROADMAP
+═══════════════════════════════════════════════ */
+#roadmap { background:var(--cream); }
+
+.roadmap-wrapper { position:relative; margin-top:12px; }
+
+.roadmap-line {
+  position:absolute; left:180px; top:32px; bottom:0;
+  width:2px; background:linear-gradient(to bottom,var(--emerald),var(--amber-bright),var(--cyan));
+  opacity:0.3;
+}
+
+.phase-block {
+  display:grid; grid-template-columns:180px 1fr;
+  gap:48px; margin-bottom:60px; position:relative;
+  align-items:flex-start;
+}
+
+.phase-meta { text-align:right; padding-right:40px; padding-top:8px; }
+
+.phase-dot {
+  position:absolute; left:174px; top:12px;
+  width:16px; height:16px; border-radius:50%;
+  border:3px solid;
+  z-index:2;
+}
+
+.ph-1 .phase-dot { background:#f59e0b; border-color:#f59e0b; box-shadow:0 0 16px rgba(245,158,11,0.6); }
+.ph-2 .phase-dot { background:var(--emerald-bright); border-color:var(--emerald-bright); box-shadow:0 0 16px rgba(0,212,138,0.6); }
+.ph-3 .phase-dot { background:var(--cyan); border-color:var(--cyan); box-shadow:0 0 16px rgba(0,184,212,0.6); }
+
+.phase-number { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+
+.phase-time {
+  font-family:'Newsreader',serif;
+  font-size:20px; font-weight:700; color:var(--text-dark);
+}
+
+.ph-1 .phase-time { color:#d4820a; }
+.ph-2 .phase-time { color:var(--emerald); }
+.ph-3 .phase-time { color:var(--cyan); }
+
+.phase-name { font-size:10.5px; color:var(--text-muted); margin-top:4px; letter-spacing:0.06em; text-transform:uppercase; }
+
+.phase-card {
+  background:white; border:1.5px solid var(--border-dark);
+  border-radius:var(--r-lg); padding:28px 30px;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow 0.3s;
+}
+
+.phase-card:hover { box-shadow:var(--shadow-md); }
+
+.ph-1 .phase-card { border-color:rgba(212,130,10,0.25); }
+.ph-2 .phase-card { border-color:rgba(0,168,107,0.25); }
+.ph-3 .phase-card { border-color:rgba(0,184,212,0.25); }
+
+.phase-card h3 {
+  font-family:'Syne',sans-serif;
+  font-size:20px; font-weight:800; color:var(--text-dark);
+  margin-bottom:16px;
+}
+
+.phase-actions {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; margin-top:16px;
+}
+
+.phase-action {
+  display:flex; align-items:flex-start; gap:9px;
+  font-size:13px; color:var(--text-mid); line-height:1.55;
+}
+
+.phase-action i { font-size:11px; margin-top:3px; flex-shrink:0; }
+.ph-1 .phase-action i { color:#d4820a; }
+.ph-2 .phase-action i { color:var(--emerald); }
+.ph-3 .phase-action i { color:var(--cyan); }
+
+.phase-kpis {
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;
+  border-top:1px solid var(--sand); padding-top:18px;
+}
+
+.kpi-pill {
+  font-size:11px; padding:5px 12px; border-radius:100px;
+  font-weight:600; border:1px solid;
+}
+
+.ph-1 .kpi-pill { background:rgba(212,130,10,0.08); border-color:rgba(212,130,10,0.25); color:#a0600a; }
+.ph-2 .kpi-pill { background:var(--emerald-pale); border-color:rgba(0,168,107,0.25); color:var(--emerald); }
+.ph-3 .kpi-pill { background:var(--cyan-pale); border-color:rgba(0,184,212,0.3); color:#0088a0; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — REGULATORY LANDSCAPE
+═══════════════════════════════════════════════ */
+#regulatory { background:var(--forest-mid); }
+
+#regulatory .sec-title { color:white; }
+#regulatory .sec-lead { color:var(--text-light); }
+#regulatory .sec-tag { color:var(--amber-bright); }
+
+.reg-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+
+.reg-card {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r-lg); padding:26px;
+  transition:all 0.3s;
+}
+
+.reg-card:hover { background:rgba(255,255,255,0.08); transform:translateY(-4px); }
+
+.reg-card h4 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:white; margin-bottom:10px; }
+.reg-card p { font-size:12.5px; color:rgba(255,255,255,0.55); line-height:1.65; }
+
+.reg-badge {
+  display:inline-block; margin-bottom:14px;
+  font-size:9.5px; font-weight:700; letter-spacing:0.1em;
+  text-transform:uppercase; padding:4px 10px; border-radius:100px;
+}
+
+.rb-rbi { background:rgba(212,130,10,0.2); color:var(--amber-bright); }
+.rb-nabard { background:rgba(0,168,107,0.2); color:var(--emerald-bright); }
+.rb-dfs { background:rgba(0,184,212,0.2); color:var(--cyan); }
+.rb-law { background:rgba(139,92,246,0.2); color:#c4b5fd; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — INTERVENTION MATRIX
+═══════════════════════════════════════════════ */
+#matrix { background:var(--warm-white); }
+
+.matrix-wrap {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-lg); overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+
+.matrix-controls {
+  padding:18px 22px; border-bottom:1px solid var(--sand);
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:var(--warm-white);
+}
+
+.matrix-search {
+  flex:1; min-width:200px; padding:11px 16px;
+  border:1.5px solid var(--border-dark); border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif; font-size:13px;
+  background:white; color:var(--text-dark); outline:none;
+  transition:border-color 0.25s;
+  min-height:var(--touch-target);
+}
+
+.matrix-search:focus { border-color:var(--emerald); }
+
+.matrix-filter {
+  padding:11px 14px; min-height:var(--touch-target);
+  border:1.5px solid var(--border-dark); border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif; font-size:12.5px;
+  background:white; color:var(--text-dark); cursor:pointer; outline:none;
+  transition:border-color 0.25s;
+}
+
+.matrix-filter:focus { border-color:var(--emerald); }
+
+table { width:100%; border-collapse:collapse; }
+
+thead tr { background:var(--forest); }
+
+thead th {
+  padding:14px 18px; text-align:left;
+  font-size:11px; font-weight:700; color:rgba(255,255,255,0.8);
+  letter-spacing:0.07em; text-transform:uppercase;
+  font-family:'DM Sans',sans-serif;
+}
+
+tbody tr { border-bottom:1px solid var(--sand); transition:background 0.15s; }
+tbody tr:hover { background:rgba(0,168,107,0.04); }
+tbody tr:last-child { border-bottom:none; }
+
+tbody td {
+  padding:13px 18px; font-size:12.5px; color:var(--text-muted);
+  vertical-align:top; line-height:1.5;
+}
+
+tbody td:first-child { color:var(--text-dark); font-weight:500; }
+
+.badge {
+  display:inline-block; padding:3px 10px; border-radius:100px;
+  font-size:10px; font-weight:700; letter-spacing:0.04em;
+}
+
+.badge-p1 { background:#fef3c7; color:#92400e; }
+.badge-p2 { background:var(--emerald-pale); color:var(--emerald); }
+.badge-p3 { background:var(--cyan-pale); color:#0088a0; }
+.badge-p12 { background:#fde68a; color:#78350f; }
+.badge-p23 { background:#d1fae5; color:#065f46; }
+
+.eq-strong { color:var(--emerald); font-weight:600; font-size:11.5px; }
+.eq-mod { color:var(--amber); font-weight:600; font-size:11.5px; }
+.eq-emerging { color:var(--text-muted); font-size:11.5px; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — EVIDENCE BASE
+═══════════════════════════════════════════════ */
+#evidence { background:var(--forest); }
+
+#evidence .sec-title { color:white; }
+#evidence .sec-lead { color:var(--text-light); }
+#evidence .sec-tag { color:var(--cyan); }
+
+.ev-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+
+.ev-card {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:var(--r-lg); padding:26px;
+  transition:all 0.3s;
+}
+
+.ev-card:hover { background:rgba(255,255,255,0.08); transform:translateY(-4px); box-shadow:0 16px 40px rgba(0,0,0,0.3); }
+
+.ev-card .ev-type {
+  font-size:9.5px; font-weight:700; letter-spacing:0.12em;
+  text-transform:uppercase; margin-bottom:12px;
+}
+
+.ev-card h4 { font-family:'Syne',sans-serif; font-size:14.5px; font-weight:700; color:white; margin-bottom:8px; line-height:1.35; }
+
+.ev-card p { font-size:12px; color:rgba(255,255,255,0.5); line-height:1.65; margin-bottom:14px; }
+
+.ev-card .ev-stat {
+  font-family:'Newsreader',serif;
+  font-size:26px; font-weight:800;
+  padding-top:14px; border-top:1px solid rgba(255,255,255,0.08);
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION — POLICY RECOMMENDATIONS
+═══════════════════════════════════════════════ */
+#policy { background:var(--warm-white); }
+
+.policy-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.policy-card {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-lg); padding:28px; box-shadow:var(--shadow-sm);
+  transition:all 0.3s;
+}
+
+.policy-card:hover { box-shadow:var(--shadow-md); transform:translateY(-3px); }
+
+.policy-card h4 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; color:var(--text-dark); margin-bottom:16px; }
+
+.policy-card .stakeholder {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:10.5px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; padding:5px 12px; border-radius:100px;
+  margin-bottom:16px;
+}
+
+.rec-list { list-style:none; }
+
+.rec-list li {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13px; color:var(--text-mid); line-height:1.6;
+  margin-bottom:10px; padding-bottom:10px;
+  border-bottom:1px solid var(--sand);
+}
+
+.rec-list li:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+.rec-list li::before { content:'→'; color:var(--emerald); font-size:14px; flex-shrink:0; margin-top:1px; font-weight:700; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — SOURCES
+═══════════════════════════════════════════════ */
+#sources { background:var(--cream); }
+
+.sources-intro {
+  background:white; border:1px solid var(--border-dark);
+  border-radius:var(--r-lg); padding:24px 28px; margin-bottom:32px;
+  box-shadow:var(--shadow-sm);
+  display:flex; align-items:flex-start; gap:16px;
+}
+
+.sources-intro i { font-size:22px; color:var(--emerald); flex-shrink:0; margin-top:2px; }
+.sources-intro p { font-size:13.5px; color:var(--text-mid); line-height:1.7; }
+
+.source-categories { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+.source-cat { background:white; border:1px solid var(--border-dark); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+
+.source-cat-hd {
+  padding:16px 24px; background:var(--warm-white);
+  border-bottom:1px solid var(--sand);
+  display:flex; align-items:center; gap:10px;
+}
+
+.source-cat-hd i { color:var(--emerald); font-size:16px; }
+.source-cat-hd h4 { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--text-dark); }
+
+.source-list { padding:8px 0; }
+
+.source-item {
+  display:flex; gap:14px; padding:12px 24px;
+  border-bottom:1px solid var(--sand); transition:background 0.15s;
+  align-items:flex-start;
+}
+
+.source-item:last-child { border-bottom:none; }
+.source-item:hover { background:rgba(0,168,107,0.04); }
+
+.s-num {
+  width:24px; height:24px; border-radius:50%;
+  background:var(--emerald-pale); color:var(--emerald);
+  font-size:10px; font-weight:700; display:flex;
+  align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;
+}
+
+.s-text { flex:1; }
+.s-title { font-size:13px; font-weight:600; color:var(--text-dark); line-height:1.4; }
+.s-meta { font-size:11px; color:var(--text-muted); margin-top:3px; }
+.s-datapoint { font-size:11px; color:var(--emerald); margin-top:4px; font-weight:500; }
+
+/* ═══════════════════════════════════════════════
+   SECTION — GLOSSARY MODAL
+═══════════════════════════════════════════════ */
+#glossary-modal {
+  position:fixed; inset:0; z-index:9000;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(8px);
+  display:none; align-items:center; justify-content:center;
+  padding:20px;
+}
+
+#glossary-modal.open { display:flex; }
+
+.glossary-box {
+  background:white; border-radius:var(--r-xl);
+  width:100%; max-width:680px; max-height:85vh;
+  display:flex; flex-direction:column;
+  box-shadow:var(--shadow-lg);
+}
+
+.glossary-hd {
+  padding:24px 28px; border-bottom:1px solid var(--sand);
+  display:flex; align-items:center; justify-content:space-between;
+  flex-shrink:0;
+}
+
+.glossary-hd h3 { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:var(--text-dark); }
+
+.glossary-close {
+  width:38px; height:38px; border-radius:10px; cursor:pointer;
+  background:var(--cream); border:none; display:flex;
+  align-items:center; justify-content:center; font-size:16px;
+  color:var(--text-muted); transition:all 0.2s;
+}
+
+.glossary-close:hover { background:var(--sand); color:var(--text-dark); }
+
+.glossary-search-wrap { padding:16px 28px; border-bottom:1px solid var(--sand); flex-shrink:0; }
+
+.glossary-search {
+  width:100%; padding:11px 16px;
+  border:1.5px solid var(--border-dark); border-radius:var(--r-sm);
+  font-family:'DM Sans',sans-serif; font-size:13.5px;
+  background:var(--warm-white); outline:none; transition:border-color 0.25s;
+}
+
+.glossary-search:focus { border-color:var(--emerald); }
+
+.glossary-list { overflow-y:auto; padding:8px 0; }
+
+.g-item {
+  padding:16px 28px; border-bottom:1px solid var(--sand);
+  transition:background 0.15s;
+}
+
+.g-item:last-child { border-bottom:none; }
+.g-item:hover { background:rgba(0,168,107,0.04); }
+
+.g-item h4 { font-size:14px; font-weight:700; color:var(--emerald); margin-bottom:6px; }
+.g-item p { font-size:12.5px; color:var(--text-mid); line-height:1.65; }
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+footer {
+  background:var(--forest);
+  padding:40px 64px; margin-left:0;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+.footer-inner {
+  max-width:1180px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:24px; flex-wrap:wrap;
+}
+
+.footer-note { font-size:12px; color:rgba(255,255,255,0.35); line-height:1.65; max-width:600px; }
+
+.footer-logo { display:flex; align-items:center; gap:10px; }
+.footer-logo i { font-size:20px; color:var(--emerald); }
+.footer-logo span { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:rgba(255,255,255,0.5); }
+
+/* ═══════════════════════════════════════════════
+   FIELD CARD (scrollable ticker at top of apps)
+═══════════════════════════════════════════════ */
+.stat-ticker {
+  background:rgba(0,0,0,0.3); border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:14px 0; overflow:hidden; position:relative;
+}
+
+.ticker-inner {
+  display:flex; gap:0; animation:tickerScroll 40s linear infinite;
+  width:max-content;
+}
+
+.ticker-item {
+  padding:0 40px; font-size:12px; color:rgba(255,255,255,0.5);
+  white-space:nowrap; display:flex; align-items:center; gap:10px;
+}
+
+.ticker-item span { color:var(--emerald-bright); font-weight:700; }
+.ticker-sep { color:rgba(255,255,255,0.15); margin:0 10px; }
+
+@keyframes tickerScroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .app-grid { grid-template-columns:repeat(2,1fr); }
+  .gaps-grid { grid-template-columns:repeat(3,1fr); }
+}
+
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar { transform: translateX(-260px); --sidebar-w: 260px; }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  footer { margin-left: 0; }
+  #sidebar-toggle { display: flex; }
+  .sec-inner { padding: 60px 32px; }
+  .hero-stats-row { grid-template-columns: repeat(2,1fr); }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-card.wide { grid-column: span 1; }
+  .infra-grid { grid-template-columns: 1fr; }
+  .policy-grid { grid-template-columns: 1fr; }
+  .source-categories { grid-template-columns: 1fr; }
+  .ev-grid { grid-template-columns: 1fr 1fr; }
+  .hero-visual { display: none; }
+  .impact-grid { grid-template-columns: repeat(2,1fr); }
+  .mini-stats { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 600px) {
+  #hero { padding: 60px 24px; }
+  .sec-inner { padding: 48px 24px; }
+  .hero-stats-row { grid-template-columns: 1fr 1fr; }
+  .kpi-grid { grid-template-columns: 1fr; }
+  .gaps-grid { grid-template-columns: 1fr 1fr; }
+  .app-grid { grid-template-columns: 1fr; }
+  .phase-block { grid-template-columns: 1fr; }
+  .roadmap-line { display: none; }
+  .phase-meta { text-align: left; padding-right: 0; padding-left: 0; }
+  .phase-dot { display: none; }
+  .reg-grid { grid-template-columns: 1fr; }
+  .ev-grid { grid-template-columns: 1fr; }
+  .mini-stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* Touch screen optimization */
+@media (pointer: coarse) {
+  .nav-link, .btn-primary, .btn-outline { min-height: 52px; }
+  .gap-card, .app-card, .phase-card { min-height: 160px; }
+  .matrix-search, .matrix-filter { min-height: 52px; font-size: 16px; }
+}
+</style>
+</head>
+<body>
+<!-- ═══ SCROLL PROGRESS ═══ -->
+<div id="scroll-progress"></div>
+
+<!-- ═══ MOBILE TOGGLE ═══ -->
+<button id="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle navigation">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- ═══════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+═══════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-icon"><i class="fas fa-seedling" style="color:var(--emerald-bright)"></i></div>
+    <h2>AI in Rural Financial Inclusion</h2>
+    <p>BFSI Transformation Report · 2026</p>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-section-label">Overview</div>
+    <a class="nav-link" href="#hero"><i class="fas fa-home"></i> Introduction</a>
+    <a class="nav-link" href="#landscape"><i class="fas fa-chart-bar"></i> The Landscape</a>
+
+    <div class="sb-section-label">Diagnostics</div>
+    <a class="nav-link" href="#gaps"><i class="fas fa-puzzle-piece"></i> Gap Taxonomy</a>
+    <a class="nav-link" href="#infrastructure"><i class="fas fa-server"></i> Infrastructure</a>
+
+    <div class="sb-section-label">Solutions</div>
+    <a class="nav-link" href="#applications"><i class="fas fa-brain"></i> AI Applications</a>
+    <a class="nav-link" href="#analytics"><i class="fas fa-chart-area"></i> Data & Analytics</a>
+    <a class="nav-link" href="#impact"><i class="fas fa-bolt"></i> Impact Metrics</a>
+
+    <div class="sb-section-label">Strategy</div>
+    <a class="nav-link" href="#roadmap"><i class="fas fa-road"></i> Roadmap</a>
+    <a class="nav-link" href="#regulatory"><i class="fas fa-balance-scale"></i> Regulatory</a>
+    <a class="nav-link" href="#matrix"><i class="fas fa-table"></i> Intervention Matrix</a>
+
+    <div class="sb-section-label">Research</div>
+    <a class="nav-link" href="#evidence"><i class="fas fa-flask"></i> Evidence Base</a>
+    <a class="nav-link" href="#policy"><i class="fas fa-landmark"></i> Policy Recs.</a>
+    <a class="nav-link" href="#sources"><i class="fas fa-book"></i> Sources</a>
+  </nav>
+
+  <div class="sb-footer">
+    Research Study on AI-Led Transformation<br>in Rural BFSI in India · Version 1.0<br>
+    <span style="color:rgba(255,255,255,0.2);">All data sourced from public institutional publications.</span>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════ -->
+<main id="main">
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 1: HERO
+══════════════════════════════════════════════════════ -->
+<section class="section" id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="dot"></div>
+      BFSI Transformation Research · India · 2026
+    </div>
+
+    <h1>
+      <span class="hl">AI-Led</span><br>
+      Transformation<br>
+      in <span class="hl-amber">Rural</span> Financial<br>
+      Inclusion
+    </h1>
+
+    <p class="hero-sub">
+      A diagnostic study of automation readiness, structural digital service gaps, core banking integration deficiencies, and a structured framework for intelligent and inclusive banking adoption across Regional Rural Banks and Cooperative Credit Institutions in India.
+    </p>
+
+    <div class="hero-stats-row">
+      <div class="hero-stat reveal">
+        <div class="h-stat-val" data-count="43">0</div>
+        <div class="h-stat-lbl">Operational RRBs across 26 States (Mar 2023)</div>
+      </div>
+      <div class="hero-stat reveal reveal-delay-1">
+        <div class="h-stat-val">21K+</div>
+        <div class="h-stat-lbl">RRB Branches · ₹6.79L Cr Deposits</div>
+      </div>
+      <div class="hero-stat reveal reveal-delay-2">
+        <div class="h-stat-val">7.3%</div>
+        <div class="h-stat-lbl">Gross NPA Ratio — 2× SCB Average</div>
+      </div>
+      <div class="hero-stat reveal reveal-delay-3">
+        <div class="h-stat-val">97K</div>
+        <div class="h-stat-lbl">PACS operational — largely offline</div>
+      </div>
+    </div>
+
+    <div class="hero-cta-row">
+      <button class="btn-primary" onclick="openGlossary()">
+        <i class="fas fa-book-open"></i> Open Glossary
+      </button>
+      <a class="btn-outline" href="#landscape">
+        <i class="fas fa-arrow-down"></i> Explore the Report
+      </a>
+    </div>
+  </div>
+
+  <!-- SVG Network Illustration -->
+  <svg class="hero-visual" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="160" cy="160" r="130" stroke="rgba(0,168,107,0.12)" stroke-width="1.5"/>
+    <circle cx="160" cy="160" r="90" stroke="rgba(0,168,107,0.1)" stroke-width="1.5"/>
+    <circle cx="160" cy="160" r="50" stroke="rgba(0,168,107,0.08)" stroke-width="1.5"/>
+    <!-- Lines -->
+    <line x1="160" y1="110" x2="160" y2="36" class="link-flow" stroke="rgba(0,168,107,0.4)" stroke-width="1.5"/>
+    <line x1="179" y1="170" x2="244" y2="107" class="link-flow" stroke="rgba(0,184,212,0.4)" stroke-width="1.5" style="animation-delay:-1s"/>
+    <line x1="179" y1="150" x2="250" y2="200" class="link-flow" stroke="rgba(0,184,212,0.4)" stroke-width="1.5" style="animation-delay:-2s"/>
+    <line x1="160" y1="210" x2="160" y2="284" class="link-flow" stroke="rgba(0,168,107,0.4)" stroke-width="1.5" style="animation-delay:-0.5s"/>
+    <line x1="141" y1="170" x2="76" y2="207" class="link-flow" stroke="rgba(212,130,10,0.4)" stroke-width="1.5" style="animation-delay:-1.5s"/>
+    <line x1="141" y1="150" x2="72" y2="100" class="link-flow" stroke="rgba(212,130,10,0.4)" stroke-width="1.5" style="animation-delay:-2.5s"/>
+    <!-- Secondary connections -->
+    <line x1="160" y1="36" x2="244" y2="107" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="244" y1="107" x2="250" y2="200" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="250" y1="200" x2="160" y2="284" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="160" y1="284" x2="76" y2="207" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="76" y1="207" x2="72" y2="100" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="72" y1="100" x2="160" y2="36" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <!-- Center -->
+    <circle cx="160" cy="160" r="20" fill="rgba(0,168,107,0.25)" stroke="rgba(0,168,107,0.7)" stroke-width="2"/>
+    <circle cx="160" cy="160" r="10" fill="rgba(0,168,107,0.6)"/>
+    <!-- Outer nodes -->
+    <circle cx="160" cy="36" r="8" fill="#00a86b" class="node-pulse" style="animation-delay:0s"/>
+    <circle cx="244" cy="107" r="7" fill="#00b8d4" class="node-pulse" style="animation-delay:-0.8s"/>
+    <circle cx="250" cy="200" r="7" fill="#00b8d4" class="node-pulse" style="animation-delay:-1.6s"/>
+    <circle cx="160" cy="284" r="8" fill="#00a86b" class="node-pulse" style="animation-delay:-2.4s"/>
+    <circle cx="76" cy="207" r="7" fill="#d4820a" class="node-pulse" style="animation-delay:-3.2s"/>
+    <circle cx="72" cy="100" r="7" fill="#d4820a" class="node-pulse" style="animation-delay:-4s"/>
+    <!-- Labels -->
+    <text x="148" y="24" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">PACS</text>
+    <text x="252" y="104" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">RRB</text>
+    <text x="258" y="205" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">CBS</text>
+    <text x="140" y="300" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">AI/ML</text>
+    <text x="36" y="212" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">DCCB</text>
+    <text x="42" y="95" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">KCC</text>
+    <text x="148" y="165" fill="white" font-size="10" font-family="monospace" font-weight="bold">CORE</text>
+  </svg>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 2: LANDSCAPE
+══════════════════════════════════════════════════════ -->
+<section class="section" id="landscape">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-chart-bar"></i> Executive Overview</div>
+    <h2 class="sec-title reveal">The <span class="accent">Scale</span>, The Stress,<br>The Opportunity</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">India's rural banking architecture — built on RRBs and Cooperative Credit Institutions — serves hundreds of millions of agricultural households under persistent structural constraint. Technology is the lever; AI is the multiplier.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card reveal">
+        <div class="kpi-icon emerald"><i class="fas fa-university"></i></div>
+        <div class="kpi-num">43 <span class="kpi-unit">RRBs</span></div>
+        <p class="kpi-desc">Operational across 26 states with 21,000+ branches and ~30 crore deposit accounts, making them the most distributed banking network in rural India.</p>
+        <p class="kpi-src">RBI, Report on Trend & Progress of Banking in India, 2022-23</p>
+      </div>
+      <div class="kpi-card reveal reveal-delay-1">
+        <div class="kpi-icon amber"><i class="fas fa-rupee-sign"></i></div>
+        <div class="kpi-num">₹4.56L <span class="kpi-unit">Cr</span></div>
+        <p class="kpi-desc">Total credit outstanding — >85% directed toward priority sector advances, primarily agriculture, rural MSMEs, and weaker sections.</p>
+        <p class="kpi-src">RBI, Report on Trend & Progress, 2022-23</p>
+      </div>
+      <div class="kpi-card reveal reveal-delay-2">
+        <div class="kpi-icon white"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="kpi-num">7.3 <span class="kpi-unit">% Gross NPA</span></div>
+        <p class="kpi-desc">RRB gross NPA ratio — nearly double the 3.9% for scheduled commercial banks, reflecting weak credit appraisal and post-disbursement monitoring gaps.</p>
+        <p class="kpi-src">RBI, 2022-23</p>
+      </div>
+      <div class="kpi-card reveal reveal-delay-3">
+        <div class="kpi-icon cyan"><i class="fas fa-percent"></i></div>
+        <div class="kpi-num">60–65 <span class="kpi-unit">% C/D Ratio</span></div>
+        <p class="kpi-desc">Credit-Deposit ratio significantly below the SCB national average of 74–76%, signalling underdeployment of mobilised deposits.</p>
+        <p class="kpi-src">RBI, 2022-23</p>
+      </div>
+      <div class="kpi-card reveal">
+        <div class="kpi-icon emerald"><i class="fas fa-users"></i></div>
+        <div class="kpi-num">97K <span class="kpi-unit">PACS</span></div>
+        <p class="kpi-desc">Primary Agricultural Credit Societies operational as of 2021-22 — largely without CBS connectivity, the critical last-mile bottleneck.</p>
+        <p class="kpi-src">NABARD, Annual Report 2021-22</p>
+      </div>
+      <div class="kpi-card reveal reveal-delay-1">
+        <div class="kpi-icon amber"><i class="fas fa-mobile-alt"></i></div>
+        <div class="kpi-num">14L+ <span class="kpi-unit">BC Agents</span></div>
+        <p class="kpi-desc">Business Correspondent agents deployed across India — the primary last-mile banking touchpoint for rural households, ripe for AI enablement.</p>
+        <p class="kpi-src">RBI, 2022-23</p>
+      </div>
+    </div>
+
+    <div class="alert-banner reveal">
+      <i class="fas fa-exclamation-circle"></i>
+      <div>
+        <h3>The Financial Inclusion Paradox</h3>
+        <p>India's Financial Inclusion Index reached <strong>60.1</strong> in March 2023 (up from 43.4 in 2017), and the World Bank's Global Findex Database 2021 records that <strong>~78% of Indian adults</strong> hold formal bank accounts. Yet account ownership masks deep quality gaps: credit access, insurance utilisation, active transaction frequency, and savings depth in rural India remain far below national averages. The institutions structurally positioned to address this — RRBs and DCCBs — are themselves constrained by technological deficiencies, operational inefficiencies, and weak credit risk management. AI is the structural lever to close this gap.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 3: GAP TAXONOMY
+══════════════════════════════════════════════════════ -->
+<section class="section" id="gaps">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-puzzle-piece"></i> Structural Diagnostics</div>
+    <h2 class="sec-title reveal">Five Categories of <span class="accent">Structural Gap</span></h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">A comprehensive diagnostic of RRBs and DCCBs reveals five distinct categories of digital service gap, each requiring targeted AI interventions with specific institutional preconditions.</p>
+
+    <div class="gaps-grid">
+      <div class="gap-card gc-1 reveal">
+        <div class="gap-icon gi-1"><i class="fas fa-wifi"></i></div>
+        <h3>Connectivity Gap</h3>
+        <p>Inadequate physical and digital network reach. Branch locations with unreliable internet connectivity cannot benefit from cloud-delivered AI tools, real-time CBS monitoring, or API-based credit bureau queries.</p>
+        <span class="gap-tag gt-1">Infrastructure Layer</span>
+      </div>
+      <div class="gap-card gc-2 reveal reveal-delay-1">
+        <div class="gap-icon gi-2"><i class="fas fa-database"></i></div>
+        <h3>Data Gap</h3>
+        <p>Incomplete, inconsistent, non-standardised financial records. Without structured historical credit performance data for agricultural borrowers, supervised ML credit risk models cannot be trained or validated.</p>
+        <span class="gap-tag gt-2">Foundation Layer</span>
+      </div>
+      <div class="gap-card gc-3 reveal reveal-delay-2">
+        <div class="gap-icon gi-3"><i class="fas fa-cogs"></i></div>
+        <h3>Process Gap</h3>
+        <p>Manual, paper-based workflows governing loan origination, land record verification, credit committee approvals, compliance reporting, and NPA identification. RPA is the appropriate near-term response.</p>
+        <span class="gap-tag gt-3">Operations Layer</span>
+      </div>
+      <div class="gap-card gc-4 reveal reveal-delay-3">
+        <div class="gap-icon gi-4"><i class="fas fa-graduation-cap"></i></div>
+        <h3>Capability Gap</h3>
+        <p>Limited digital literacy among branch-level staff, absence of data science expertise, and insufficient change management capacity. Cannot be addressed through technology alone — requires structured training programmes.</p>
+        <span class="gap-tag gt-4">Human Capital</span>
+      </div>
+      <div class="gap-card gc-5 reveal reveal-delay-4">
+        <div class="gap-icon gi-5"><i class="fas fa-plug"></i></div>
+        <h3>Integration Gap</h3>
+        <p>Absence of interoperability between CBS, PACS software, government databases (Aadhaar, land records, PM-KISAN), and credit bureaus. The Account Aggregator framework provides the regulatory architecture to close this gap.</p>
+        <span class="gap-tag gt-5">Ecosystem Layer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 4: CBS INFRASTRUCTURE
+══════════════════════════════════════════════════════ -->
+<section class="section" id="infrastructure">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-server"></i> Digital Infrastructure</div>
+    <h2 class="sec-title reveal">Core Banking <span class="accent">Infrastructure</span> State</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">CBS adoption and utilisation across RRBs and DCCBs reveals a stark distinction between technical deployment and operational integration — the gap between going live and actually leveraging digital capabilities.</p>
+
+    <div class="infra-grid">
+      <!-- Card 1 -->
+      <div class="infra-card reveal">
+        <div class="infra-card-hd">
+          <i class="fas fa-chart-pie"></i>
+          <h3>CBS Utilisation Across Institution Types</h3>
+        </div>
+        <div class="infra-card-body">
+          <div class="pb-row">
+            <div class="pb-label"><span>RRB — Full CBS Deployment</span><span>~85%</span></div>
+            <div class="pb-track"><div class="pb-fill" style="width:85%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>RRB — Analytics Modules Active</span><span>~38%</span></div>
+            <div class="pb-track"><div class="pb-fill" style="width:38%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>DCCB — CBS Penetration</span><span>~55%</span></div>
+            <div class="pb-track"><div class="pb-fill amber-fill" style="width:55%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>DCCB — Branch-level Integration</span><span>~30%</span></div>
+            <div class="pb-track"><div class="pb-fill amber-fill" style="width:30%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>PACS — CBS Connectivity</span><span>~15%</span></div>
+            <div class="pb-track"><div class="pb-fill red-fill" style="width:15%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="infra-card reveal reveal-delay-1">
+        <div class="infra-card-hd">
+          <i class="fas fa-table"></i>
+          <h3>Digital Channel Availability vs. Active Utilisation</h3>
+        </div>
+        <div class="infra-card-body">
+          <table class="data-table">
+            <thead><tr><th>Channel</th><th>Availability</th><th>Active Use</th></tr></thead>
+            <tbody>
+              <tr><td>Branch CBS (RRBs)</td><td>High</td><td>Moderate</td></tr>
+              <tr><td>Mobile Banking</td><td>Moderate</td><td>Low (~8–12%)</td></tr>
+              <tr><td>Internet Banking</td><td>Low</td><td>Very Low</td></tr>
+              <tr><td>AEPS / BC Agents</td><td>High</td><td>Moderate–High</td></tr>
+              <tr><td>UPI (Rural)</td><td>Growing</td><td>Low–Moderate</td></tr>
+              <tr><td>USSD *99#</td><td>Low</td><td>Very Low</td></tr>
+              <tr><td>IVR Voice Banking</td><td>Nascent</td><td>Minimal</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="infra-card reveal">
+        <div class="infra-card-hd">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>CBS Platform Fragmentation — Cooperative Banks</h3>
+        </div>
+        <div class="infra-card-body">
+          <div class="pb-row">
+            <div class="pb-label"><span>Maharashtra, Gujarat, Karnataka</span><span>High CBS</span></div>
+            <div class="pb-track"><div class="pb-fill" style="width:78%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>Andhra Pradesh, Tamil Nadu</span><span>Moderate</span></div>
+            <div class="pb-track"><div class="pb-fill" style="width:62%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>Uttar Pradesh, Bihar, MP</span><span>Low</span></div>
+            <div class="pb-track"><div class="pb-fill amber-fill" style="width:28%"></div></div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-label"><span>NE States &amp; Tribal Districts</span><span>Very Low</span></div>
+            <div class="pb-track"><div class="pb-fill red-fill" style="width:14%"></div></div>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-muted);margin-top:14px;line-height:1.6">Fragmentation impairs interoperability, complicates regulatory data collection, and significantly raises the cost of integrating AI tools that require clean, structured data from core banking systems.</p>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="infra-card reveal reveal-delay-1">
+        <div class="infra-card-hd">
+          <i class="fas fa-info-circle"></i>
+          <h3>CBS Platform Ecosystem</h3>
+        </div>
+        <div class="infra-card-body">
+          <table class="data-table">
+            <thead><tr><th>Platform</th><th>Provider</th><th>Primary Users</th></tr></thead>
+            <tbody>
+              <tr><td>Finacle</td><td>Infosys</td><td>RRBs (SBI-sponsored)</td></tr>
+              <tr><td>BaNCS</td><td>TCS</td><td>RRBs (various)</td></tr>
+              <tr><td>Flexcube</td><td>Oracle</td><td>Select cooperative banks</td></tr>
+              <tr><td>State Co-op Software</td><td>Various</td><td>State cooperative banks</td></tr>
+              <tr><td>NABARD-sponsored</td><td>Various</td><td>DCCBs (legacy schemes)</td></tr>
+              <tr><td>Proprietary systems</td><td>Internal</td><td>Some state co-op federations</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 5: AI APPLICATIONS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="applications">
+  <!-- Stat ticker -->
+  <div class="stat-ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item"><span>₹4.56L Cr</span> RRB credit outstanding<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>7 Cr+</span> Active KCC accounts<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>48.65 Cr</span> PMJDY accounts opened<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>20–30%</span> AI credit loss reduction potential<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>25–40%</span> RPA back-office cost reduction<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>14L+</span> BC agents ripe for AI enablement<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>78%</span> Indian adults with formal bank accounts<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>60.1</span> FI-Index score March 2023<span class="ticker-sep">·</span></span>
+      <!-- Duplicate for seamless loop -->
+      <span class="ticker-item"><span>₹4.56L Cr</span> RRB credit outstanding<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>7 Cr+</span> Active KCC accounts<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>48.65 Cr</span> PMJDY accounts opened<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>20–30%</span> AI credit loss reduction potential<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>25–40%</span> RPA back-office cost reduction<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>14L+</span> BC agents ripe for AI enablement<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>78%</span> Indian adults with formal bank accounts<span class="ticker-sep">·</span></span>
+      <span class="ticker-item"><span>60.1</span> FI-Index score March 2023<span class="ticker-sep">·</span></span>
+    </div>
+  </div>
+
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-brain"></i> AI Application Domains</div>
+    <h2 class="sec-title reveal" style="color:white">Eight <span style="color:var(--emerald-bright)">AI Interventions</span><br>Across Core Banking</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">From alternative credit scoring to intelligent BC network tools, these applications address the structural gaps identified in the diagnostic, calibrated to institutional data realities and regulatory constraints.</p>
+
+    <div class="app-grid">
+      <!-- App 1: Credit Scoring -->
+      <div class="app-card ac-1 reveal">
+        <div class="app-icon" style="background:rgba(0,168,107,0.15)"><i class="fas fa-star-half-alt" style="color:var(--emerald-bright)"></i></div>
+        <h3>ML-Based Alternative Credit Scoring</h3>
+        <p>Incorporates land records (Bhulekh), NDVI satellite crop data, PM-KISAN DBT records, PMFBY history, and MGNREGS payments to score thin-file rural borrowers excluded under traditional bureau models.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">XGBoost / LightGBM</span>
+          <span class="app-tag">SHAP Explainability</span>
+          <span class="app-tag">CIBIL / CRIF API</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(0,168,107,0.1);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-chart-line" style="color:var(--emerald-bright)"></i> Evidence: Apollo Agriculture (Kenya) — AI credit scoring improved approval rates for creditworthy smallholders while improving portfolio quality. SIDBI Account Aggregator pilots reduced MSME loan TAT from 15–30 days to 2–5 days.
+        </div>
+      </div>
+
+      <!-- App 2: NPA EWS -->
+      <div class="app-card ac-2 reveal reveal-delay-1">
+        <div class="app-icon" style="background:rgba(212,130,10,0.15)"><i class="fas fa-exclamation-triangle" style="color:var(--amber-bright)"></i></div>
+        <h3>NPA Early Warning System</h3>
+        <p>Predictive models identify leading delinquency indicators — first missed payment, declining transaction frequency, PMFBY claim filings, crop failure notifications, and MGNREGS demand spikes — before the 90-day NPA threshold.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">Rules + ML Hybrid</span>
+          <span class="app-tag">CBS Integration</span>
+          <span class="app-tag">Satellite Data</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(212,130,10,0.1);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-chart-bar" style="color:var(--amber-bright)"></i> McKinsey & Co (2021): AI-based risk management can reduce credit losses by 20–30% vs traditional approaches. Pre-emptive 30-day engagement dramatically outperforms reactive post-NPA recovery.
+        </div>
+      </div>
+
+      <!-- App 3: PSL Compliance -->
+      <div class="app-card ac-3 reveal reveal-delay-2">
+        <div class="app-icon" style="background:rgba(0,184,212,0.15)"><i class="fas fa-tasks" style="color:var(--cyan)"></i></div>
+        <h3>RPA for PSL Compliance & XBRL Reporting</h3>
+        <p>Automated classification of loan accounts into PSL categories using RBI Master Direction rules applied to CBS data, with direct pipeline to XBRL submission — reducing reporting cycles from weeks to hours.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">Rule Engine + ML</span>
+          <span class="app-tag">XBRL Auto-submit</span>
+          <span class="app-tag">Real-time PSL Dashboard</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(0,184,212,0.1);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-lightbulb" style="color:var(--cyan)"></i> McKinsey Global Institute (2017): RPA delivers 25–40% reduction in total back-office processing costs in financial services. For rural institutions, savings likely at the higher end.
+        </div>
+      </div>
+
+      <!-- App 4: Customer Profiling -->
+      <div class="app-card ac-4 reveal reveal-delay-3">
+        <div class="app-icon" style="background:rgba(139,92,246,0.15)"><i class="fas fa-user-circle" style="color:#c4b5fd"></i></div>
+        <h3>Customer Financial Profiling & Personalisation</h3>
+        <p>Integrates CBS transaction history with PM-KISAN, Soil Health Card, PMFBY, and MGNREGS data under the Account Aggregator framework to enable data-driven product recommendations for 7 crore+ KCC account holders.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">Account Aggregator</span>
+          <span class="app-tag">DPDP Act 2023</span>
+          <span class="app-tag">Propensity Models</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(139,92,246,0.1);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-users" style="color:#c4b5fd"></i> Enables automated identification of uninsured KCC holders eligible for PMFBY, proactive limit review in strong growing seasons, and investment credit targeting for consistent repayers.
+        </div>
+      </div>
+
+      <!-- App 5: Fraud Detection -->
+      <div class="app-card ac-5 reveal">
+        <div class="app-icon" style="background:rgba(239,68,68,0.15)"><i class="fas fa-shield-alt" style="color:#fca5a5"></i></div>
+        <h3>Fraud Detection & Cybersecurity AI</h3>
+        <p>ML-based anomaly detection at AEPS/UPI layer flags unusual transaction velocity, geographic inconsistency, and BC agent fraud patterns. AI-assisted KYC verification uses OCR, facial recognition, and document authenticity classification.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">Anomaly Detection</span>
+          <span class="app-tag">OCR + Face Match</span>
+          <span class="app-tag">AEPS Security</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(239,68,68,0.08);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-lock" style="color:#fca5a5"></i> Addresses both traditional fraud (ghost borrowers, document forgery) and emerging digital fraud (SIM swap, biometric spoofing, phishing targeting rural customers).
+        </div>
+      </div>
+
+      <!-- App 6: AI-enabled BC networks -->
+      <div class="app-card ac-6 reveal reveal-delay-1">
+        <div class="app-icon" style="background:rgba(236,72,153,0.15)"><i class="fas fa-mobile-alt" style="color:#f9a8d4"></i></div>
+        <h3>AI-Enabled BC Network Tools</h3>
+        <p>Offline-first mobile apps for 14L+ BC agents deliver pre-computed credit assessments, product recommendations, and early-warning flags. Voice interfaces in Hindi, Tamil, Telugu, Marathi, Bengali, Kannada, Odia, Gujarati.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">Offline-First</span>
+          <span class="app-tag">Multilingual NLP</span>
+          <span class="app-tag">AI4Bharat Models</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(236,72,153,0.08);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-microphone" style="color:#f9a8d4"></i> AI4Bharat (IIT Madras) multilingual models demonstrate strong performance on major Indian languages. Voice-first design critical for overcoming literacy barriers in rural populations.
+        </div>
+      </div>
+
+      <!-- App 7: Liquidity Forecasting -->
+      <div class="app-card ac-7 reveal reveal-delay-2">
+        <div class="app-icon" style="background:rgba(245,158,11,0.15)"><i class="fas fa-water" style="color:#fcd34d"></i></div>
+        <h3>Liquidity & Deposit Mobilisation AI</h3>
+        <p>Time-series ML on CBS data (ARIMA + gradient boosting) forecasts kharif/rabi seasonal credit drawdown and repayment flows. Propensity models identify underperforming deposit segments for targeted outreach campaigns.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">ARIMA / LSTM</span>
+          <span class="app-tag">Seasonal Modelling</span>
+          <span class="app-tag">ALM Integration</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(245,158,11,0.08);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-piggy-bank" style="color:#fcd34d"></i> Agricultural credit cycle creates highly predictable seasonal structure — kharif disbursement Jun–Aug, repayment Nov–Jan — not yet systematically leveraged in liquidity planning.
+        </div>
+      </div>
+
+      <!-- App 8: Generative AI / NLP -->
+      <div class="app-card ac-8 reveal reveal-delay-3">
+        <div class="app-icon" style="background:rgba(52,211,153,0.15)"><i class="fas fa-comment-dots" style="color:#6ee7b7"></i></div>
+        <h3>Generative AI & Multilingual NLP</h3>
+        <p>LLM-powered tools for credit appraisal memoranda drafting, regulatory report narratives, financial literacy chatbots, and customer service in regional languages. Back-office automation of documentation before customer-facing deployment.</p>
+        <div class="app-card-tags">
+          <span class="app-tag">LLM Fine-tuning</span>
+          <span class="app-tag">22 Indian Languages</span>
+          <span class="app-tag">IVR Integration</span>
+        </div>
+        <div class="app-evidence" style="background:rgba(52,211,153,0.08);color:rgba(255,255,255,0.65)">
+          <i class="fas fa-robot" style="color:#6ee7b7"></i> SBI (SIA chatbot) and HDFC (EVA) have demonstrated scalable conversational AI deployment in Indian banking. BhashaNet (MeitY) driving Indian language model development.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 6: DATA & ANALYTICS / VISUALIZATIONS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="analytics">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-chart-area"></i> Data Visualization</div>
+    <h2 class="sec-title reveal">Portfolio <span class="accent">Analytics</span> & Market Data</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">Key data points from RBI, NABARD, World Bank, and NPCI publications quantifying the rural banking challenge and the AI opportunity.</p>
+
+    <!-- Mini stats row -->
+    <div class="mini-stats reveal">
+      <div class="mini-stat">
+        <div class="ms-num" data-count="78">0</div><span class="ms-num" style="font-size:30px; font-family:Newsreader,serif; font-weight:800">%</span>
+        <div class="ms-label">Indian adults with formal bank accounts (World Bank, 2021)</div>
+        <span class="ms-badge" style="background:#d1fae5;color:#065f46">↑ from 35% in 2011</span>
+      </div>
+      <div class="mini-stat">
+        <div class="ms-num" data-count="8375">0</div><span class="ms-num" style="font-size:30px; font-family:Newsreader,serif; font-weight:800">Cr</span>
+        <div class="ms-label">UPI transactions in FY2022-23 (₹139L Cr value)</div>
+        <span class="ms-badge" style="background:#fef3c7;color:#92400e">NPCI 2023</span>
+      </div>
+      <div class="mini-stat">
+        <div class="ms-num" data-count="48">0</div><span class="ms-num" style="font-size:30px; font-family:Newsreader,serif; font-weight:800">.65 Cr</span>
+        <div class="ms-label">PMJDY accounts opened by March 2023</div>
+        <span class="ms-badge" style="background:#e0f7ff;color:#0088a0">MoF 2023</span>
+      </div>
+      <div class="mini-stat">
+        <div class="ms-num">60.1</div>
+        <div class="ms-label">RBI Financial Inclusion Index (March 2023)</div>
+        <span class="ms-badge" style="background:#d1fae5;color:#065f46">↑ from 53.9 (2021)</span>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <!-- Chart 1: NPA Comparison -->
+      <div class="chart-card reveal">
+        <div class="chart-card-hd">
+          <h4>NPA Ratio Comparison — RRBs vs SCBs</h4>
+          <p>Gross NPA % across bank categories, March 2023 · Source: RBI, Report on Trend & Progress 2022-23</p>
+        </div>
+        <div class="chart-wrap"><canvas id="npaChart"></canvas></div>
+      </div>
+
+      <!-- Chart 2: Credit-Deposit Ratio -->
+      <div class="chart-card reveal reveal-delay-1">
+        <div class="chart-card-hd">
+          <h4>Credit-Deposit Ratio Analysis</h4>
+          <p>C/D ratio across bank types vs national average · Source: RBI, 2022-23</p>
+        </div>
+        <div class="chart-wrap"><canvas id="cdChart"></canvas></div>
+      </div>
+
+      <!-- Chart 3: FI Index Progress (wide) -->
+      <div class="chart-card wide reveal">
+        <div class="chart-card-hd">
+          <h4>Financial Inclusion Index Trajectory (RBI FI-Index)</h4>
+          <p>Composite measure of access, usage, and quality of financial services — with projections assuming AI adoption · Source: RBI Annual Reports 2017–2023</p>
+        </div>
+        <div class="chart-wrap tall"><canvas id="fiChart"></canvas></div>
+      </div>
+
+      <!-- Chart 4: AI Impact Potential -->
+      <div class="chart-card reveal">
+        <div class="chart-card-hd">
+          <h4>AI Application — Estimated Impact by Domain</h4>
+          <p>Projected efficiency / quality improvement potential · Source: McKinsey (2021), IFC (2018), CGAP (2022)</p>
+        </div>
+        <div class="chart-wrap"><canvas id="impactChart"></canvas></div>
+      </div>
+
+      <!-- Chart 5: Digital Channel Adoption -->
+      <div class="chart-card reveal reveal-delay-1">
+        <div class="chart-card-hd">
+          <h4>Rural Digital Channel Adoption Pattern</h4>
+          <p>Usage frequency distribution across rural banking touchpoints · Source: RBI, NPCI, field assessments</p>
+        </div>
+        <div class="chart-wrap"><canvas id="channelChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 7: IMPACT METRICS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="impact">
+  <div class="sec-inner">
+    <div class="sec-tag"><i class="fas fa-bolt"></i> Quantified Opportunity</div>
+    <h2 class="sec-title">The <span style="color:var(--emerald-bright)">Impact</span> of AI Adoption</h2>
+    <div class="divider"></div>
+    <p class="sec-lead">Directional estimates grounded in published evidence from comparable emerging market deployments, adjusted for rural banking institutional context.</p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--emerald-bright)" data-count="30">0<span style="font-size:28px">%</span></div>
+        <div class="impact-label">Potential reduction in NPA formation rates via AI-driven early warning and pre-emptive intervention</div>
+        <div class="impact-source">McKinsey & Co., 2021 · Global commercial banking</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--amber-bright)" data-count="40">0<span style="font-size:28px">%</span></div>
+        <div class="impact-label">Reduction in back-office processing costs through RPA deployment in compliance and reporting workflows</div>
+        <div class="impact-source">McKinsey Global Institute, 2017 · Financial Services</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--cyan)" data-count="85">0<span style="font-size:28px">%</span></div>
+        <div class="impact-label">Reduction in loan processing turnaround time with AI-augmented digital origination versus manual appraisal</div>
+        <div class="impact-source">SIDBI Account Aggregator Pilots, 2022-23</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" style="color:#c4b5fd" data-count="25">0<span style="font-size:28px">%+</span></div>
+        <div class="impact-label">Improvement in credit portfolio quality for thin-file borrowers using alternative data scoring</div>
+        <div class="impact-source">IFC, 2018 · Alternative Data SME Finance</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-top:24px;position:relative;z-index:1">
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--emerald-bright);font-size:36px">₹1.98L Cr</div>
+        <div class="impact-label">PMJDY deposits mobilised by March 2023 — demonstrating rural savings response to access friction reduction</div>
+        <div class="impact-source">Ministry of Finance, 2023</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--amber-bright)">7 Cr+</div>
+        <div class="impact-label">Active KCC accounts — largest agricultural credit product distribution, ripe for AI-augmented underwriting</div>
+        <div class="impact-source">MoAFW, Annual Report 2022-23</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num" style="color:var(--cyan)">₹139L Cr</div>
+        <div class="impact-label">UPI transaction value in FY2022-23 — demonstrating India's digital payment infrastructure scale</div>
+        <div class="impact-source">NPCI, Annual Report 2022-23</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 8: ROADMAP
+══════════════════════════════════════════════════════ -->
+<section class="section" id="roadmap">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-road"></i> Implementation Strategy</div>
+    <h2 class="sec-title reveal">Three-Phase <span class="accent">Roadmap</span></h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">A staged implementation framework calibrated to institutional realities — prioritising data foundation before deploying ML, and AI-augmented decisions before algorithmic autonomy.</p>
+
+    <div class="roadmap-wrapper reveal">
+      <div class="roadmap-line"></div>
+
+      <!-- Phase 1 -->
+      <div class="phase-block ph-1">
+        <div class="phase-meta">
+          <div class="phase-number">Phase 01</div>
+          <div class="phase-time">0 – 18 Months</div>
+          <div class="phase-name">Foundation & Automation</div>
+        </div>
+        <div class="phase-dot"></div>
+        <div class="phase-card">
+          <h3>Data Infrastructure Remediation & RPA</h3>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:4px">The prerequisite phase — building the data foundation without which AI models cannot function. Immediate efficiency gains from RPA fund longer-term ML investments.</p>
+          <div class="phase-actions">
+            <div class="phase-action"><i class="fas fa-check-circle"></i> CBS data quality audit and structured remediation plan</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> RPA deployment for PSL compliance and XBRL reporting</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Digital loan origination system (LOS) implementation</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> PACS-CBS API integration (priority districts)</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Staff digital literacy training programme</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Basic NPA EWS (rules-based) deployment</div>
+          </div>
+          <div class="phase-kpis">
+            <span class="kpi-pill">Data completeness >80%</span>
+            <span class="kpi-pill">XBRL automation</span>
+            <span class="kpi-pill">LOS adoption</span>
+            <span class="kpi-pill">Staff training 100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-block ph-2">
+        <div class="phase-meta">
+          <div class="phase-number">Phase 02</div>
+          <div class="phase-time">18 – 42 Months</div>
+          <div class="phase-name">ML Decision Support</div>
+        </div>
+        <div class="phase-dot"></div>
+        <div class="phase-card">
+          <h3>Machine Learning for Credit & Risk Management</h3>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:4px">ML tools deployed as decision-support supplements to officer judgment — not replacements. Minimum 18 months of clean data from Phase 1 required as prerequisite.</p>
+          <div class="phase-actions">
+            <div class="phase-action"><i class="fas fa-check-circle"></i> ML credit scoring with alternative data (Bhulekh + NDVI + PM-KISAN)</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> ML-enhanced NPA early warning system with SHAP explainability</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> AI-assisted PSL classification engine</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Multilingual customer service chatbot (Phase 2–3 languages)</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Fraud anomaly detection at AEPS/UPI layer</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Cash flow forecasting model for treasury</div>
+          </div>
+          <div class="phase-kpis">
+            <span class="kpi-pill">NPA ratio reduction target</span>
+            <span class="kpi-pill">Credit TAT ≤5 days</span>
+            <span class="kpi-pill">PSL accuracy >95%</span>
+            <span class="kpi-pill">Chatbot regional lang</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-block ph-3">
+        <div class="phase-meta">
+          <div class="phase-number">Phase 03</div>
+          <div class="phase-time">42 – 72 Months</div>
+          <div class="phase-name">Integrated AI Ecosystem</div>
+        </div>
+        <div class="phase-dot"></div>
+        <div class="phase-card">
+          <h3>Full AI-Driven Credit Lifecycle Management</h3>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:4px">Integrated AI-driven credit lifecycle management, intelligent BC network enablement, real-time regulatory reporting, and generative AI for institutional back-office productivity.</p>
+          <div class="phase-actions">
+            <div class="phase-action"><i class="fas fa-check-circle"></i> End-to-end AI credit lifecycle (origination to recovery)</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> AI-enabled BC agent toolkit with offline intelligence</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Real-time regulatory reporting with auto-submission</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Generative AI for appraisal memo and compliance drafting</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Customer financial profiling with Account Aggregator</div>
+            <div class="phase-action"><i class="fas fa-check-circle"></i> Predictive deposit mobilisation and ALM integration</div>
+          </div>
+          <div class="phase-kpis">
+            <span class="kpi-pill">Full lifecycle AI</span>
+            <span class="kpi-pill">BC AI toolkit</span>
+            <span class="kpi-pill">Real-time XBRL</span>
+            <span class="kpi-pill">FI-Index target 75+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 9: REGULATORY LANDSCAPE
+══════════════════════════════════════════════════════ -->
+<section class="section" id="regulatory">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-balance-scale"></i> Regulatory Environment</div>
+    <h2 class="sec-title reveal">Regulatory <span style="color:var(--amber-bright)">Architecture</span> for AI Adoption</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">AI adoption in rural banking operates within a complex regulatory architecture. Understanding key frameworks is essential for responsible and compliant AI deployment.</p>
+
+    <div class="reg-grid">
+      <div class="reg-card reveal">
+        <span class="reg-badge rb-rbi">RBI Framework</span>
+        <h4>Priority Sector Lending Master Direction</h4>
+        <p>RRBs must direct 75% of ANBC to priority sector with specific sub-targets for small/marginal farmers, weaker sections, and micro-enterprises. AI-assisted PSL computation automates complex multi-criteria classification.</p>
+      </div>
+      <div class="reg-card reveal reveal-delay-1">
+        <span class="reg-badge rb-rbi">RBI Framework</span>
+        <h4>Fair Practices Code & Explainable AI</h4>
+        <p>Credit decisions must be explainable to borrowers and auditable to regulators. SHAP-based explainability frameworks satisfy Fair Practices Code requirements, enabling AI-assisted credit without black-box opacity.</p>
+      </div>
+      <div class="reg-card reveal reveal-delay-2">
+        <span class="reg-badge rb-rbi">RBI Infrastructure</span>
+        <h4>Account Aggregator Framework (Sep 2021)</h4>
+        <p>Regulatory architecture enabling consent-based sharing of financial data — bank statements, tax records, insurance data — with lending institutions for credit assessment. Critical enabler for alternative credit scoring in rural banking.</p>
+      </div>
+      <div class="reg-card reveal">
+        <span class="reg-badge rb-nabard">NABARD</span>
+        <h4>DCCB Technology Upgrade Schemes</h4>
+        <p>NABARD provides concessional finance and technical support for cooperative bank technology upgrades. Key funding source for Phase 1 CBS remediation and data infrastructure investments in resource-constrained cooperative institutions.</p>
+      </div>
+      <div class="reg-card reveal reveal-delay-1">
+        <span class="reg-badge rb-law">DPDP Act 2023</span>
+        <h4>Digital Personal Data Protection Act</h4>
+        <p>Governs collection, processing, and sharing of personal financial data. Explicit consent frameworks required for AI profiling applications. Customer financial profiling under Account Aggregator must operate within DPDP consent architecture.</p>
+      </div>
+      <div class="reg-card reveal reveal-delay-2">
+        <span class="reg-badge rb-dfs">DFS / MoF</span>
+        <h4>Cooperative Bank Dual Oversight Challenge</h4>
+        <p>DCCBs are regulated jointly by RBI (financial supervision) and state cooperative registrars (governance). This dual regulatory framework has historically slowed technology adoption mandates and complicates uniform implementation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 10: INTERVENTION MATRIX
+══════════════════════════════════════════════════════ -->
+<section class="section" id="matrix">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-table"></i> Intervention Matrix</div>
+    <h2 class="sec-title reveal">AI <span class="accent">Intervention</span> Matrix</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">A filterable reference mapping structural gaps to AI interventions, deployment mechanisms, implementation phases, and evidence quality levels.</p>
+
+    <div class="matrix-wrap reveal">
+      <div class="matrix-controls">
+        <input type="text" id="matrixSearch" class="matrix-search" placeholder="🔍 Search interventions, gaps, or mechanisms..." oninput="filterMatrix()">
+        <select class="matrix-filter" id="phaseFilter" onchange="filterMatrix()">
+          <option value="">All Phases</option>
+          <option value="1">Phase 1</option>
+          <option value="2">Phase 2</option>
+          <option value="3">Phase 3</option>
+        </select>
+        <select class="matrix-filter" id="gapFilter" onchange="filterMatrix()">
+          <option value="">All Gaps</option>
+          <option value="Data">Data Gap</option>
+          <option value="Process">Process Gap</option>
+          <option value="Trust">Trust/Inclusion</option>
+          <option value="Capability">Capability Gap</option>
+          <option value="Liquidity">Liquidity Gap</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Gap Type</th>
+              <th>AI Intervention</th>
+              <th>Mechanism</th>
+              <th>Phase</th>
+              <th>Evidence Strength</th>
+            </tr>
+          </thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 11: EVIDENCE BASE
+══════════════════════════════════════════════════════ -->
+<section class="section" id="evidence">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-flask"></i> Research Evidence</div>
+    <h2 class="sec-title reveal">Evidence <span style="color:var(--cyan)">Base</span></h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">Published evidence from India's fintech ecosystem and comparable international deployments supporting the AI intervention framework proposed in this report.</p>
+
+    <div class="ev-grid">
+      <div class="ev-card reveal">
+        <div class="ev-type" style="color:var(--emerald-bright)"><i class="fas fa-landmark"></i> India — Account Aggregator</div>
+        <h4>SIDBI Digital MSME Credit Pilots</h4>
+        <p>Account Aggregator-enabled consent-based data sharing used in early pilot deployments by SIDBI and partner fintech lenders to dramatically compress loan processing timelines while maintaining portfolio quality.</p>
+        <div class="ev-stat" style="color:var(--emerald-bright)">15–30 days → 2–5 days TAT</div>
+      </div>
+
+      <div class="ev-card reveal reveal-delay-1">
+        <div class="ev-type" style="color:var(--amber-bright)"><i class="fas fa-globe-asia"></i> Kenya — Agricultural AI Credit</div>
+        <h4>Apollo Agriculture Smallholder Lending</h4>
+        <p>Satellite imagery and ML-based crop assessment integrated into credit underwriting for smallholder farmers in Kenya. Reported improvements in both loan approval rates for creditworthy borrowers and portfolio NPA rates vs traditional approaches.</p>
+        <div class="ev-stat" style="color:var(--amber-bright)">Significant approval ↑ + NPA ↓</div>
+      </div>
+
+      <div class="ev-card reveal reveal-delay-2">
+        <div class="ev-type" style="color:var(--cyan)"><i class="fas fa-building"></i> McKinsey Global — Risk AI</div>
+        <h4>AI-Based Credit Risk Management</h4>
+        <p>Analysis of AI-based risk management across global commercial banking contexts demonstrates potential for meaningful credit loss reduction vs traditional approaches. Adjustment required for rural banking data quality limitations.</p>
+        <div class="ev-stat" style="color:var(--cyan)">20–30% credit loss reduction</div>
+      </div>
+
+      <div class="ev-card reveal">
+        <div class="ev-type" style="color:#c4b5fd"><i class="fas fa-chart-line"></i> McKinsey — RPA Efficiency</div>
+        <h4>Robotic Process Automation in Financial Services</h4>
+        <p>McKinsey Global Institute (2017) research on RPA deployment across financial services institutions demonstrates consistent back-office cost reduction. Rural banking institutions with high manual processing burden expected to achieve higher-end savings.</p>
+        <div class="ev-stat" style="color:#c4b5fd">25–40% back-office cost reduction</div>
+      </div>
+
+      <div class="ev-card reveal reveal-delay-1">
+        <div class="ev-type" style="color:#fca5a5"><i class="fas fa-university"></i> IFC — Alternative Data</div>
+        <h4>Alternative Data Transforming SME Finance</h4>
+        <p>IFC (2018) research on alternative data in SME finance across low-income countries demonstrates that the majority of micro-enterprises absent from formal credit bureau records exhibit financially predictive behaviour through alternative data sources.</p>
+        <div class="ev-stat" style="color:#fca5a5">Significant inclusion improvement</div>
+      </div>
+
+      <div class="ev-card reveal reveal-delay-2">
+        <div class="ev-type" style="color:#fcd34d"><i class="fas fa-seedling"></i> India — PMJDY Scale</div>
+        <h4>Jan Dhan Yojana Deposit Mobilisation Evidence</h4>
+        <p>PMJDY programme deposit growth data demonstrates that when account access friction is reduced, deposit behaviour in rural areas responds positively and measurably — providing evidence basis for AI-enabled deposit mobilisation propensity models.</p>
+        <div class="ev-stat" style="color:#fcd34d">₹1.98L Cr deposits across 48.65 Cr accounts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 12: POLICY RECOMMENDATIONS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="policy">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-landmark"></i> Policy Framework</div>
+    <h2 class="sec-title reveal">Policy <span class="accent">Recommendations</span></h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">AI adoption in rural banking is not merely an efficiency measure — it is a structural instrument for deepening financial inclusion and strengthening the institutional foundations of last-mile credit delivery.</p>
+
+    <div class="policy-grid">
+      <div class="policy-card reveal">
+        <span class="stakeholder" style="background:rgba(212,130,10,0.1);color:var(--amber)"><i class="fas fa-university"></i> Reserve Bank of India</span>
+        <h4>Regulatory Enablement</h4>
+        <ul class="rec-list">
+          <li>Issue specific guidance on explainability standards for AI-assisted credit decisions in rural and cooperative banking — defining minimum SHAP / attribution requirements</li>
+          <li>Extend Account Aggregator framework guidance to cooperative banks and RRBs with phased compliance timelines aligned to CBS maturity</li>
+          <li>Establish a regulatory sandbox specifically for AI-powered rural credit applications, enabling evidence generation under supervisory oversight</li>
+          <li>Mandate XBRL-format reporting through automated CBS pipelines for RRBs — reducing manual compliance burden and enabling AI-based regulatory analytics</li>
+        </ul>
+      </div>
+
+      <div class="policy-card reveal reveal-delay-1">
+        <span class="stakeholder" style="background:rgba(0,168,107,0.1);color:var(--emerald)"><i class="fas fa-leaf"></i> NABARD</span>
+        <h4>Institutional Capacity Building</h4>
+        <ul class="rec-list">
+          <li>Scale technology upgrade schemes specifically targeting CBS utilisation depth — not just deployment coverage — with data quality metrics as disbursement conditions</li>
+          <li>Establish a shared AI services platform accessible to DCCBs and smaller RRBs, providing cloud-delivered ML tools without requiring in-house data science teams</li>
+          <li>Fund structured digital literacy programme for branch-level staff across sponsored cooperative institutions — AI tools require human operators who can interpret outputs</li>
+          <li>Develop a rural banking AI implementation playbook with standard operating procedures for EWS, credit scoring, and compliance automation deployment</li>
+        </ul>
+      </div>
+
+      <div class="policy-card reveal">
+        <span class="stakeholder" style="background:rgba(0,184,212,0.1);color:var(--cyan)"><i class="fas fa-rupee-sign"></i> Ministry of Finance / DFS</span>
+        <h4>Financial & Structural Support</h4>
+        <ul class="rec-list">
+          <li>Create dedicated AI technology capital expenditure funding stream for RRBs, with conditions requiring data quality remediation as prerequisite disbursement criterion</li>
+          <li>Direct sponsor banks to extend not just CBS platforms but analytics capabilities, AI model libraries, and data science support to their RRB affiliates</li>
+          <li>Harmonise cooperative bank regulatory oversight between RBI and state registrars to enable uniform technology adoption mandates at scale</li>
+          <li>Ensure PM-KISAN, PMFBY, and MGNREGS databases have accessible, standardised API interfaces usable by lending institutions for credit enrichment</li>
+        </ul>
+      </div>
+
+      <div class="policy-card reveal reveal-delay-1">
+        <span class="stakeholder" style="background:rgba(139,92,246,0.1);color:#8b5cf6"><i class="fas fa-microchip"></i> Technology Ecosystem</span>
+        <h4>AI Infrastructure Development</h4>
+        <ul class="rec-list">
+          <li>AI4Bharat (IIT Madras) to prioritise coverage of tribal and regional language models for BC agent voice interface deployment in underserved geographies</li>
+          <li>ISRO / NRSC to formalize agricultural lending data access API for NDVI satellite indices — currently ad-hoc — enabling standardised integration into credit scoring pipelines</li>
+          <li>UIDAI to extend Aadhaar-based e-KYC and face authentication specifically for rural bank loan origination at low data bandwidth environments</li>
+          <li>Credit bureaus (CIBIL, CRIF) to develop rural-sector specific thin-file borrower products incorporating alternative data sources mandated by RBI framework</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SECTION 13: SOURCES
+══════════════════════════════════════════════════════ -->
+<section class="section" id="sources">
+  <div class="sec-inner">
+    <div class="sec-tag reveal"><i class="fas fa-book"></i> References & Data Sources</div>
+    <h2 class="sec-title reveal">Cited <span class="accent">Sources</span> & Data Points</h2>
+    <div class="divider reveal"></div>
+    <p class="sec-lead reveal">All data cited in this report is sourced from publicly available institutional publications. Readers are advised to verify all statistics against primary sources prior to operational use.</p>
+
+    <div class="sources-intro reveal">
+      <i class="fas fa-info-circle"></i>
+      <p>This report employs a secondary data analysis methodology, drawing from a defined hierarchy of institutional sources: RBI publications as primary source, supplemented by NABARD, World Bank, IFC, CGAP, McKinsey Global Institute, and peer-reviewed academic literature. Data vintages reflect the most recent available at time of research (primarily March 2023 for RBI data). DCCB-specific data carries higher uncertainty due to limited systematic publication.</p>
+    </div>
+
+    <div class="source-categories reveal">
+      <!-- Institutional Sources -->
+      <div class="source-cat">
+        <div class="source-cat-hd">
+          <i class="fas fa-landmark"></i>
+          <h4>Primary Institutional Sources</h4>
+        </div>
+        <div class="source-list">
+          <div class="source-item">
+            <div class="s-num">1</div>
+            <div class="s-text">
+              <div class="s-title">RBI — Report on Trend and Progress of Banking in India, 2022-23</div>
+              <div class="s-meta">Reserve Bank of India · Annual Publication · Mumbai</div>
+              <div class="s-datapoint">Key data: RRB NPA 7.3%, C/D ratio 60–65%, 43 RRBs, 21,000+ branches, ₹6.79L Cr deposits, ₹4.56L Cr advances, 14L+ BC agents</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">2</div>
+            <div class="s-text">
+              <div class="s-title">RBI — Annual Report 2022-23</div>
+              <div class="s-meta">Reserve Bank of India · Mumbai · 2023</div>
+              <div class="s-datapoint">Key data: FI-Index 60.1 (March 2023), FI-Index 53.9 (March 2021), Account Aggregator framework updates</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">3</div>
+            <div class="s-text">
+              <div class="s-title">RBI — Master Direction on Priority Sector Lending: Targets and Classification</div>
+              <div class="s-meta">Reserve Bank of India · 2020 (updated periodically)</div>
+              <div class="s-datapoint">Key data: RRBs 75% ANBC PSL obligation, sub-targets for SMF, weaker sections, micro-enterprise</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">4</div>
+            <div class="s-text">
+              <div class="s-title">NABARD — Annual Report 2021-22</div>
+              <div class="s-meta">National Bank for Agriculture and Rural Development · Mumbai</div>
+              <div class="s-datapoint">Key data: ~97,000 PACS operational, Status of Microfinance in India data, cooperative CBS uptake</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">5</div>
+            <div class="s-text">
+              <div class="s-title">Ministry of Finance — PMJDY Operational Statistics</div>
+              <div class="s-meta">Department of Financial Services, Government of India · 2023</div>
+              <div class="s-datapoint">Key data: 48.65 crore accounts opened, ₹1.98 lakh crore aggregate deposits by March 2023</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">6</div>
+            <div class="s-text">
+              <div class="s-title">Ministry of Agriculture & Farmers Welfare — Annual Report 2022-23</div>
+              <div class="s-meta">Government of India · New Delhi</div>
+              <div class="s-datapoint">Key data: 7+ crore active KCC accounts, PM-KISAN beneficiary data, PMFBY enrolment statistics</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">7</div>
+            <div class="s-text">
+              <div class="s-title">NPCI — Annual Report 2022-23</div>
+              <div class="s-meta">National Payments Corporation of India · Mumbai</div>
+              <div class="s-datapoint">Key data: 8,375 crore UPI transactions in FY2022-23, ₹139 lakh crore transaction value, AEPS transaction volumes</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">8</div>
+            <div class="s-text">
+              <div class="s-title">SIDBI — Annual Report 2022-23</div>
+              <div class="s-meta">Small Industries Development Bank of India · Lucknow</div>
+              <div class="s-datapoint">Key data: Account Aggregator pilot outcomes for MSME digital credit, turnaround time reduction evidence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- International & Research Sources -->
+      <div class="source-cat">
+        <div class="source-cat-hd">
+          <i class="fas fa-globe"></i>
+          <h4>International & Research Sources</h4>
+        </div>
+        <div class="source-list">
+          <div class="source-item">
+            <div class="s-num">9</div>
+            <div class="s-text">
+              <div class="s-title">World Bank — Global Findex Database 2021</div>
+              <div class="s-meta">World Bank Group · Washington, D.C. · 2022</div>
+              <div class="s-datapoint">Key data: ~78% Indian adults with formal bank accounts (2021), up from 35% (2011) and 53% (2014)</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">10</div>
+            <div class="s-text">
+              <div class="s-title">McKinsey & Company — AI in Financial Services: Risk Management</div>
+              <div class="s-meta">McKinsey Global Institute · 2021</div>
+              <div class="s-datapoint">Key data: AI-based risk management can reduce credit losses by 20–30% vs traditional approaches in global commercial banking</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">11</div>
+            <div class="s-text">
+              <div class="s-title">McKinsey Global Institute — A Future That Works: Automation, Employment, and Productivity</div>
+              <div class="s-meta">McKinsey Global Institute · 2017</div>
+              <div class="s-datapoint">Key data: RPA delivers 25–40% reduction in total back-office processing costs in financial services</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">12</div>
+            <div class="s-text">
+              <div class="s-title">IFC — Alternative Data Transforming SME Finance</div>
+              <div class="s-meta">International Finance Corporation · World Bank Group · 2018</div>
+              <div class="s-datapoint">Key data: Majority of micro-enterprises absent from formal credit bureaus exhibit financially predictive behaviour via alternative data; meaningful inclusion improvement demonstrated</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">13</div>
+            <div class="s-text">
+              <div class="s-title">CGAP — Digital Credit: Helping or Harming Borrowers</div>
+              <div class="s-meta">Consultative Group to Assist the Poor · 2022</div>
+              <div class="s-datapoint">Key data: Models incorporating satellite imagery and weather data achieve materially better predictive accuracy for smallholder agricultural borrowers than bureau-score-only models</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">14</div>
+            <div class="s-text">
+              <div class="s-title">Apollo Agriculture — Impact Report 2022</div>
+              <div class="s-meta">Apollo Agriculture · Nairobi, Kenya · 2022</div>
+              <div class="s-datapoint">Key data: AI credit scoring with satellite + ML for smallholder farmers improved approval rates and portfolio quality; comparable mechanism to India context</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">15</div>
+            <div class="s-text">
+              <div class="s-title">BIS Working Papers on Digital Finance in Emerging Markets</div>
+              <div class="s-meta">Bank for International Settlements · Basel · Various years</div>
+              <div class="s-datapoint">Key data: Pre-emptive NPA intervention value; digital credit risks in emerging markets; regulatory approaches to AI in banking</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">16</div>
+            <div class="s-text">
+              <div class="s-title">IMF — Article IV Consultation for India & Financial Sector Assessment</div>
+              <div class="s-meta">International Monetary Fund · 2022-23</div>
+              <div class="s-datapoint">Key data: India financial sector stability assessment, cooperative bank credit quality, rural credit market gaps</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical & AI Research -->
+      <div class="source-cat">
+        <div class="source-cat-hd">
+          <i class="fas fa-microchip"></i>
+          <h4>Technical, AI & Regulatory Research</h4>
+        </div>
+        <div class="source-list">
+          <div class="source-item">
+            <div class="s-num">17</div>
+            <div class="s-text">
+              <div class="s-title">AI4Bharat / IIT Madras — IndicNLP Research Publications</div>
+              <div class="s-meta">Indian Institute of Technology Madras · Chennai · 2020–2023</div>
+              <div class="s-datapoint">Key data: Multilingual NLP model performance benchmarks for Hindi, Tamil, Telugu, Bengali, Marathi, Kannada, Odia, Gujarati</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">18</div>
+            <div class="s-text">
+              <div class="s-title">RBI Working Paper — Agricultural Finance and Alternative Data</div>
+              <div class="s-meta">Reserve Bank of India Department of Economic Policy & Research · 2022</div>
+              <div class="s-datapoint">Key data: Remote sensing data (NDVI) potential in agricultural credit risk assessment; ISRO satellite infrastructure for lending applications</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">19</div>
+            <div class="s-text">
+              <div class="s-title">Digital Personal Data Protection Act, 2023</div>
+              <div class="s-meta">Parliament of India · Ministry of Electronics and Information Technology · 2023</div>
+              <div class="s-datapoint">Key provisions: Consent framework for personal data processing; applicability to AI financial profiling; Data Protection Board establishment</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">20</div>
+            <div class="s-text">
+              <div class="s-title">UIDAI — Annual Report & e-KYC Statistics</div>
+              <div class="s-meta">Unique Identification Authority of India · New Delhi · 2022-23</div>
+              <div class="s-datapoint">Key data: Aadhaar-based e-KYC transaction volumes, biometric authentication infrastructure reach, AEPS integration statistics</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">21</div>
+            <div class="s-text">
+              <div class="s-title">PwC India — AI in Indian Banking: Opportunities and Challenges</div>
+              <div class="s-meta">PricewaterhouseCoopers India · Mumbai · 2022</div>
+              <div class="s-datapoint">Key data: AI adoption benchmarks in Indian banking sector, regulatory readiness assessment, implementation cost ranges</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">22</div>
+            <div class="s-text">
+              <div class="s-title">Deloitte — Digital Banking Transformation in Emerging Markets</div>
+              <div class="s-meta">Deloitte Insights · 2023</div>
+              <div class="s-datapoint">Key data: Rural banking digital transformation case studies; BC agent technology enablement frameworks; last-mile banking technology ROI benchmarks</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">23</div>
+            <div class="s-text">
+              <div class="s-title">ISRO / NRSC — NDVI and Agricultural Remote Sensing Data</div>
+              <div class="s-meta">Indian Space Research Organisation · National Remote Sensing Centre · Hyderabad</div>
+              <div class="s-datapoint">Key data: NDVI satellite index availability, crop health monitoring capability, integration with agricultural lending credit scoring models</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">24</div>
+            <div class="s-text">
+              <div class="s-title">Parliamentary Standing Committee on Finance — Reports on Rural Banking</div>
+              <div class="s-meta">Parliament of India · Finance Committee · Various sessions 2019–2023</div>
+              <div class="s-datapoint">Key data: RRB merger rationale, cooperative bank governance gaps, rural credit market committee findings, RRB recapitalisation context</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PMFBY, KCC & Agricultural Programme Data -->
+      <div class="source-cat">
+        <div class="source-cat-hd">
+          <i class="fas fa-seedling"></i>
+          <h4>Agricultural Programme & Scheme Data</h4>
+        </div>
+        <div class="source-list">
+          <div class="source-item">
+            <div class="s-num">25</div>
+            <div class="s-text">
+              <div class="s-title">PMFBY — Pradhan Mantri Fasal Bima Yojana Statistics Portal</div>
+              <div class="s-meta">Ministry of Agriculture & Farmers Welfare · Govt. of India · 2023</div>
+              <div class="s-datapoint">Key data: PMFBY enrolment by district, claim frequency by crop type, insured sum vs total agriculture credit, integration with KCC credit data</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">26</div>
+            <div class="s-text">
+              <div class="s-title">PM-KISAN — Direct Benefit Transfer Statistical Dashboard</div>
+              <div class="s-meta">Ministry of Agriculture & Farmers Welfare · Govt. of India · 2023</div>
+              <div class="s-datapoint">Key data: 11+ crore farmer beneficiaries, instalment disbursement geolocation data, land ownership validation through Aadhaar-land linkage</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">27</div>
+            <div class="s-text">
+              <div class="s-title">MGNREGS — Mahatma Gandhi National Rural Employment Guarantee Scheme MIS</div>
+              <div class="s-meta">Ministry of Rural Development · Govt. of India · 2022-23</div>
+              <div class="s-datapoint">Key data: Employment demand spikes as agricultural income stress indicator; wage payment transaction histories usable as alternative credit data</div>
+            </div>
+          </div>
+          <div class="source-item">
+            <div class="s-num">28</div>
+            <div class="s-text">
+              <div class="s-title">Regional Rural Banks Act, 1976 & Amendments</div>
+              <div class="s-meta">Parliament of India · 1976, amended 2015</div>
+              <div class="s-datapoint">Key provisions: Tripartite ownership structure (50% Central, 35% Sponsor Bank, 15% State), mandate for agricultural and rural credit, sponsoring bank obligations</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     GLOSSARY MODAL
+══════════════════════════════════════════════════════ -->
+<div id="glossary-modal" onclick="closeGlossaryOnBg(event)">
+  <div class="glossary-box">
+    <div class="glossary-hd">
+      <h3><i class="fas fa-book-open" style="color:var(--emerald);margin-right:10px"></i> Glossary of Terms</h3>
+      <button class="glossary-close" onclick="closeGlossary()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="glossary-search-wrap">
+      <input type="text" class="glossary-search" id="glossarySearch" placeholder="Search terms..." oninput="filterGlossary()">
+    </div>
+    <div class="glossary-list" id="glossaryList"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <i class="fas fa-seedling"></i>
+      <span>AI Rural BFSI · India Research Report</span>
+    </div>
+    <p class="footer-note">
+      This report is prepared for academic and institutional research purposes. All data cited is sourced from publicly available institutional publications. Readers are advised to verify all statistics against primary sources prior to operational use. Version 1.0 — 2026.
+    </p>
+  </div>
+</footer>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
+<script>
+
+/* ═══ SCROLL PROGRESS ═══ */
+window.addEventListener('scroll', () => {
+  const el = document.getElementById('scroll-progress');
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  el.style.width = `${(scrollTop / docHeight) * 100}%`;
+});
+
+/* ═══ SIDEBAR TOGGLE (MOBILE) ═══ */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ═══ ACTIVE NAV LINKS ═══ */
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+
+sections.forEach(s => sectionObserver.observe(s));
+
+/* ═══ SCROLL REVEAL ═══ */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ═══ COUNTER ANIMATION ═══ */
+function animateCounter(el, target, duration = 1800) {
+  const isFloat = String(target).includes('.');
+  const start = performance.now();
+  const update = (time) => {
+    const progress = Math.min((time - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = ease * target;
+    el.textContent = isFloat ? current.toFixed(1) : Math.floor(current).toLocaleString('en-IN');
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = isFloat ? target.toFixed(1) : target.toLocaleString('en-IN');
+  };
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseFloat(el.dataset.count);
+      if (!isNaN(target) && !el.dataset.animated) {
+        el.dataset.animated = '1';
+        animateCounter(el, target);
+      }
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+/* ═══ PROGRESS BAR ANIMATION ═══ */
+const pbObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.pb-fill').forEach(fill => {
+        const w = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(() => { fill.style.width = w; }, 150);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const infraSection = document.getElementById('infrastructure');
+if (infraSection) pbObserver.observe(infraSection);
+
+/* ═══ GLOSSARY ═══ */
+const glossaryTerms = [
+  { term: 'Account Aggregator (AA)', def: 'A regulated entity, licensed by the Reserve Bank of India, that enables a bank customer to securely share their financial data (bank statements, insurance policies, tax records) with another institution for a specific purpose — such as a loan application — with explicit customer consent. Launched September 2021. Relevant regulatory architecture: Digital Personal Data Protection Act, 2023.' },
+  { term: 'Algorithmic Bias', def: 'The phenomenon where an AI model systematically produces outputs that favour or disadvantage certain groups in ways that are unintended and unfair. Typically arises when historical training data reflects past discriminatory lending patterns. Algorithmic bias auditing is the systematic process of testing models for differential treatment across demographic groups.' },
+  { term: 'API (Application Programming Interface)', def: 'A technical protocol allowing two software systems to communicate and exchange data automatically. In banking, APIs enable CBS systems to connect to external services — land record databases (Bhulekh), credit bureaus (CIBIL, CRIF), payment systems, and government programme databases (PM-KISAN, MGNREGS) — without manual data entry.' },
+  { term: 'CBS — Core Banking Solution', def: 'Software platform providing central transaction processing for a bank — recording deposits, loans, payments, and account balances, enabling all branches to operate from a single shared database. Platforms include Finacle (Infosys), BaNCS (TCS), Flexcube (Oracle). CBS enables real-time account updates, branch connectivity, and regulatory reporting feeds.' },
+  { term: 'DCCB — District Central Cooperative Bank', def: 'Middle tier of India\'s three-tier cooperative credit structure. DCCBs operate at district level as primary credit delivery institutions, with PACS as village-level interface below them and State Cooperative Banks above. Governed under state cooperative societies acts with dual regulation (RBI + state cooperative registrars).' },
+  { term: 'EWS — Early Warning System', def: 'An analytical mechanism identifying leading indicators of loan stress before the 90-day past-due threshold that triggers NPA classification. Strategic value: a borrower identified within 30 days of first missed payment is far more likely to be rehabilitated than one identified after three missed repayments.' },
+  { term: 'Gradient Boosting (XGBoost, LightGBM)', def: 'A machine learning technique building a predictive model by combining many simple models in sequence, where each subsequent model corrects errors of the previous one. Routinely outperforms simpler models on tabular financial data. Widely used for credit risk scoring in rural banking applications.' },
+  { term: 'KCC — Kisan Credit Card', def: 'Flexible revolving credit facility introduced in 1998 for agricultural working capital aligned to seasonal cropping patterns. Over 7 crore active accounts as of 2022-23. The single most widely distributed agricultural credit product in India and the primary vehicle for AI-augmented credit scoring in rural banking.' },
+  { term: 'Machine Learning (ML)', def: 'A branch of AI in which a computer system learns to perform a task — such as predicting whether a borrower will repay a loan — by identifying patterns in historical data, rather than following explicitly programmed rules. Supervised ML trained on labelled historical loan data generates probability-of-default scores for new applicants.' },
+  { term: 'NDVI — Normalized Difference Vegetation Index', def: 'A satellite-derived measure of plant health and agricultural productivity, computed from reflectance of red and near-infrared light. Available from ISRO\'s satellite infrastructure. Provides an independent, verifiable proxy for crop productivity usable in credit scoring models — capturing seasonal crop health without physical field inspection.' },
+  { term: 'NPA — Non-Performing Asset', def: 'A loan or advance for which principal or interest payment has remained overdue for 90 days or more (IND-AS classification threshold). RRB gross NPA ratio: 7.3% (March 2023) vs SCB average 3.9%. NPA formation drivers include income-shock delinquency, appraisal-failure delinquency, and political loan waivers.' },
+  { term: 'NLP — Natural Language Processing', def: 'AI techniques for understanding and generating human language — spoken or written. In rural banking: multilingual chatbots for customer service and financial literacy delivery; voice-based IVR systems interpreting spoken queries in regional languages; automated document processing extracting structured information from unstructured text.' },
+  { term: 'OCR — Optical Character Recognition', def: 'Technology converting images of text — scanned documents, photographs of identity cards, digitised handwritten forms — into machine-readable text. Used in banking to automate extraction of data from paper-based loan files, KYC documents (Aadhaar, PAN, voter ID), and land ownership certificates.' },
+  { term: 'PACS — Primary Agricultural Credit Society', def: 'Village-level interface between India\'s cooperative credit system and agricultural household borrowers. Approximately 97,000 PACS were operational as of 2021-22 — of which a large proportion lacked CBS connectivity, creating a fundamental barrier to integrated digital credit delivery at the village level.' },
+  { term: 'PSL — Priority Sector Lending', def: 'RBI mandate requiring banks to direct minimum prescribed percentages of credit to priority sectors — agriculture, MSMEs, weaker sections, housing. RRBs must direct 75% of Adjusted Net Bank Credit to Priority Sector, with specific sub-targets for small and marginal farmers, weaker sections, and micro-enterprises.' },
+  { term: 'RPA — Robotic Process Automation', def: 'Software robots executing rule-based, repetitive, multi-step processes across digital systems without human intervention. Does not require AI but is a critical enabling layer — generates structured digital records from previously manual processes and delivers immediate efficiency gains that fund longer-term AI investment.' },
+  { term: 'RRB — Regional Rural Bank', def: 'Established under the Regional Rural Banks Act, 1976. Tripartite ownership: 50% central government, 35% sponsor scheduled commercial bank, 15% state government. As of March 2023: 43 RRBs across 26 states, 21,000+ branches, ₹6.79 lakh crore deposits, ₹4.56 lakh crore advances, 7.3% gross NPA ratio.' },
+  { term: 'SHAP — SHapley Additive exPlanations', def: 'A mathematical framework explaining machine learning model outputs by attributing each variable\'s contribution to a specific prediction. In credit scoring, SHAP values tell an officer which factors — land size, past repayment history, NDVI score, PM-KISAN status — most influenced a borrower\'s credit risk score, enabling explainable AI decisions.' },
+  { term: 'UPI — Unified Payments Interface', def: 'Real-time payment system developed by NPCI enabling instant bank-to-bank transfers via mobile devices. Processed 8,375 crore transactions valued at ₹139 lakh crore in FY2022-23. Critical rural digital payment infrastructure, though smartphone dependency limits reach in rural geographies.' },
+  { term: 'XBRL — eXtensible Business Reporting Language', def: 'A digital reporting standard tagging financial data with machine-readable labels, enabling automated submission and validation of financial reports. RBI requires XBRL-format regulatory reporting from supervised entities including RRBs. Institutions with weak data infrastructure find XBRL compliance a significant operational challenge.' }
+];
+
+function renderGlossary(terms) {
+  const container = document.getElementById('glossaryList');
+  container.innerHTML = terms.map(t => `
+    <div class="g-item">
+      <h4>${t.term}</h4>
+      <p>${t.def}</p>
+    </div>
+  `).join('');
+}
+
+renderGlossary(glossaryTerms);
+
+function filterGlossary() {
+  const q = document.getElementById('glossarySearch').value.toLowerCase();
+  renderGlossary(glossaryTerms.filter(t => t.term.toLowerCase().includes(q) || t.def.toLowerCase().includes(q)));
+}
+
+function openGlossary() {
+  document.getElementById('glossary-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGlossary() {
+  document.getElementById('glossary-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeGlossaryOnBg(e) {
+  if (e.target === document.getElementById('glossary-modal')) closeGlossary();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGlossary(); });
+
+/* ═══ INTERVENTION MATRIX DATA ═══ */
+const matrixData = [
+  { gap: 'Data Gap', intervention: 'Alternative Credit Scoring (ML)', mechanism: 'Supervised ML on land records, NDVI, PM-KISAN, PMFBY, MGNREGS data to score thin-file rural borrowers', phase: '2', phaseCode: 'p2', evidence: 'Strong' },
+  { gap: 'Data Gap', intervention: 'Digital Loan Origination System', mechanism: 'Structured data capture at point of customer interaction, replacing paper applications with digital records', phase: '1', phaseCode: 'p1', evidence: 'Strong' },
+  { gap: 'Data Gap', intervention: 'OCR Loan File Digitisation', mechanism: 'Computer vision OCR conversion of historical paper loan files into structured CBS-compatible digital records', phase: '1', phaseCode: 'p1', evidence: 'Strong (global)' },
+  { gap: 'Data Gap', intervention: 'CBS Data Quality Automation', mechanism: 'ML-based anomaly detection on CBS data to identify and flag inconsistencies, duplicates, and missing fields', phase: '1', phaseCode: 'p1', evidence: 'Moderate' },
+  { gap: 'Process Gap', intervention: 'RPA for PSL Compliance', mechanism: 'Automated XBRL reporting, PSL classification engine, real-time target monitoring from CBS data pipeline', phase: '1', phaseCode: 'p1', evidence: 'Strong' },
+  { gap: 'Process Gap', intervention: 'RPA for KYC Data Entry', mechanism: 'Software bots transfer customer identification data from digitised documents to CBS customer master records', phase: '1', phaseCode: 'p1', evidence: 'Strong' },
+  { gap: 'Process Gap', intervention: 'AI Credit Appraisal Memos', mechanism: 'Generative AI auto-drafts credit appraisal memoranda from structured loan file data for human review and approval', phase: '3', phaseCode: 'p3', evidence: 'Emerging' },
+  { gap: 'Process Gap', intervention: 'Automated NACH Setup', mechanism: 'RPA creates and submits automated repayment mandates for new loan accounts without manual intervention', phase: '1', phaseCode: 'p1', evidence: 'Strong' },
+  { gap: 'Process Gap', intervention: 'Cash Flow Forecasting Model', mechanism: 'Time-series ML (ARIMA + gradient boosting) on CBS credit/repayment history; seasonal agricultural calendar integration', phase: '2', phaseCode: 'p2', evidence: 'Moderate' },
+  { gap: 'Data Gap', intervention: 'NPA Early Warning System (EWS)', mechanism: 'Rules + ML hybrid detecting repayment stress signals, crop failure data, declining transaction frequency before 90-day NPA', phase: '1-2', phaseCode: 'p12', evidence: 'Strong (global)' },
+  { gap: 'Trust/Inclusion Gap', intervention: 'Multilingual NLP Chatbot (Voice)', mechanism: 'Voice-based account and product queries in regional languages via IVR/AI (Hindi, Tamil, Telugu, Marathi, Bengali, Kannada)', phase: '2–3', phaseCode: 'p23', evidence: 'Moderate' },
+  { gap: 'Trust/Inclusion Gap', intervention: 'Fraud Detection — Anomaly Detection', mechanism: 'ML-based transaction anomaly flagging at AEPS/UPI layer (velocity, geography, biometric consistency)', phase: '2', phaseCode: 'p2', evidence: 'Strong (global)' },
+  { gap: 'Trust/Inclusion Gap', intervention: 'AI-Assisted KYC Verification', mechanism: 'OCR + facial recognition + document authenticity classification for origination-stage fraud prevention', phase: '1-2', phaseCode: 'p12', evidence: 'Strong (India)' },
+  { gap: 'Capability Gap', intervention: 'AI-Enabled BC Agent Toolkit', mechanism: 'Offline-first mobile app with pre-computed credit assessments, product recommendations, EWS flags for 14L+ BC agents', phase: '2–3', phaseCode: 'p23', evidence: 'Moderate' },
+  { gap: 'Capability Gap', intervention: 'AI-Assisted Staff Decision Support', mechanism: 'SHAP-based model outputs providing credit officers structured analytical summaries for better-informed credit decisions', phase: '2', phaseCode: 'p2', evidence: 'Moderate' },
+  { gap: 'Data Gap', intervention: 'Customer Financial Profiling', mechanism: 'Integrated CBS + PM-KISAN + PMFBY + MGNREGS profile under Account Aggregator for data-driven product personalisation', phase: '2–3', phaseCode: 'p23', evidence: 'Moderate' },
+  { gap: 'Trust/Inclusion Gap', intervention: 'Deposit Propensity Modelling', mechanism: 'ML models identifying underperforming deposit segments for BC agent targeted outreach campaigns', phase: '2', phaseCode: 'p2', evidence: 'Moderate' },
+  { gap: 'Liquidity Gap', intervention: 'Liquidity Forecasting Model', mechanism: 'Seasonal time-series ML on CBS data; ARIMA + gradient boosting for branch-level and institution-level liquidity projections', phase: '2–3', phaseCode: 'p23', evidence: 'Moderate' },
+  { gap: 'Process Gap', invention: 'NDVI-Based Crop Assessment', intervention: 'NDVI-Based Crop Credit Assessment', mechanism: 'Satellite NDVI time-series analysis identifies anomalous crop stress at plot level, feeding KCC credit limit decisions', phase: '2–3', phaseCode: 'p23', evidence: 'Emerging' },
+  { gap: 'Data Gap', intervention: 'SHG Repayment History Integration', mechanism: 'Self-help group repayment histories incorporated as predictive alternative credit data for individual ML credit scoring', phase: '2', phaseCode: 'p2', evidence: 'Moderate' }
+];
+
+const phaseMap = { p1:'Phase 1', p2:'Phase 2', p3:'Phase 3', p12:'Phase 1–2', p23:'Phase 2–3' };
+const badgeMap = { p1:'badge-p1', p2:'badge-p2', p3:'badge-p3', p12:'badge-p12', p23:'badge-p23' };
+
+function getPhaseBadge(code) {
+  return `<span class="badge ${badgeMap[code]||'badge-p2'}">${phaseMap[code]||code}</span>`;
+}
+
+function getEvidenceBadge(e) {
+  if (e.toLowerCase().includes('strong')) return `<span class="eq-strong"><i class="fas fa-circle-check" style="font-size:10px;margin-right:4px"></i>${e}</span>`;
+  if (e.toLowerCase().includes('moderate')) return `<span class="eq-mod"><i class="fas fa-circle-half-stroke" style="font-size:10px;margin-right:4px"></i>${e}</span>`;
+  return `<span class="eq-emerging"><i class="fas fa-circle" style="font-size:8px;margin-right:4px"></i>${e}</span>`;
+}
+
+function renderMatrix(data) {
+  const tbody = document.getElementById('matrixBody');
+  tbody.innerHTML = data.length ? data.map(row => `
+    <tr>
+      <td>${row.gap}</td>
+      <td>${row.intervention}</td>
+      <td>${row.mechanism}</td>
+      <td>${getPhaseBadge(row.phaseCode)}</td>
+      <td>${getEvidenceBadge(row.evidence)}</td>
+    </tr>
+  `).join('') : '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-muted)">No matching interventions found.</td></tr>';
+}
+
+renderMatrix(matrixData);
+
+function filterMatrix() {
+  const search = document.getElementById('matrixSearch').value.toLowerCase();
+  const phase = document.getElementById('phaseFilter').value;
+  const gap = document.getElementById('gapFilter').value;
+  const filtered = matrixData.filter(row => {
+    const matchSearch = !search || JSON.stringify(row).toLowerCase().includes(search);
+    const matchPhase = !phase || row.phase.includes(phase);
+    const matchGap = !gap || row.gap.includes(gap);
+    return matchSearch && matchPhase && matchGap;
+  });
+  renderMatrix(filtered);
+}
+
+/* ═══ CHARTS ═══ */
+const chartDefaults = {
+  font: { family: "'DM Sans', sans-serif", size: 12 },
+  color: '#6a8475'
+};
+
+Chart.defaults.font.family = chartDefaults.font.family;
+Chart.defaults.color = chartDefaults.color;
+
+// Chart 1: NPA Comparison
+new Chart(document.getElementById('npaChart'), {
+  type: 'bar',
+  data: {
+    labels: ['RRBs', 'DCCBs (est.)', 'Public Sector Banks', 'Private Sector Banks', 'SCBs (National Avg)'],
+    datasets: [{
+      label: 'Gross NPA %',
+      data: [7.3, 9.2, 5.0, 2.8, 3.9],
+      backgroundColor: ['#e55', '#ff7070', '#f5a623', '#00a86b', '#00b8d4'],
+      borderRadius: 6,
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, max: 12, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(0,0,0,0.05)' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 2: C/D Ratio
+new Chart(document.getElementById('cdChart'), {
+  type: 'bar',
+  data: {
+    labels: ['RRBs', 'Cooperative Banks', 'Public Sector Banks', 'Private Sector Banks', 'National Avg SCBs'],
+    datasets: [{
+      label: 'Credit-Deposit Ratio %',
+      data: [62, 58, 73, 88, 75],
+      backgroundColor: ['rgba(0,168,107,0.7)', 'rgba(212,130,10,0.7)', 'rgba(0,184,212,0.7)', 'rgba(139,92,246,0.7)', 'rgba(107,114,128,0.7)'],
+      borderRadius: 6, borderWidth: 0,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(0,0,0,0.05)' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 3: FI-Index Trajectory
+new Chart(document.getElementById('fiChart'), {
+  type: 'line',
+  data: {
+    labels: ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024 (proj)', '2025 (proj)', '2026 (proj)'],
+    datasets: [
+      {
+        label: 'FI-Index (Actual/Projected)',
+        data: [43.4, 46.0, 48.5, 51.4, 53.9, 56.4, 60.1, null, null, null],
+        borderColor: '#00a86b', backgroundColor: 'rgba(0,168,107,0.12)',
+        tension: 0.4, fill: true, pointRadius: 5, borderWidth: 2.5
+      },
+      {
+        label: 'Projection — Without AI Adoption',
+        data: [null, null, null, null, null, null, 60.1, 62.0, 63.5, 65.0],
+        borderColor: 'rgba(107,114,128,0.6)', backgroundColor: 'transparent',
+        tension: 0.4, borderDash: [6,3], pointRadius: 4, borderWidth: 1.5
+      },
+      {
+        label: 'Projection — With AI Adoption',
+        data: [null, null, null, null, null, null, 60.1, 64.5, 68.0, 72.5],
+        borderColor: '#00b8d4', backgroundColor: 'rgba(0,184,212,0.08)',
+        tension: 0.4, fill: true, borderDash: [4,2], pointRadius: 4, borderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } } },
+    scales: {
+      y: { beginAtZero: false, min: 35, max: 85, grid: { color: 'rgba(0,0,0,0.05)' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Chart 4: AI Impact Potential
+new Chart(document.getElementById('impactChart'), {
+  type: 'radar',
+  data: {
+    labels: ['Credit Scoring Accuracy', 'NPA Reduction', 'Back-office Efficiency', 'Loan Processing Speed', 'Fraud Detection', 'Customer Reach', 'Deposit Mobilisation', 'PSL Compliance Accuracy'],
+    datasets: [{
+      label: 'Without AI (Current State)',
+      data: [42, 38, 40, 30, 45, 50, 42, 55],
+      borderColor: 'rgba(107,114,128,0.6)', backgroundColor: 'rgba(107,114,128,0.08)',
+      borderWidth: 2, pointRadius: 4
+    }, {
+      label: 'With AI Adoption (Phase 3)',
+      data: [82, 72, 78, 88, 84, 78, 70, 90],
+      borderColor: '#00a86b', backgroundColor: 'rgba(0,168,107,0.12)',
+      borderWidth: 2.5, pointRadius: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 18 } } },
+    scales: {
+      r: {
+        beginAtZero: true, max: 100,
+        ticks: { stepSize: 20, callback: v => v + '%' },
+        grid: { color: 'rgba(0,0,0,0.08)' },
+        pointLabels: { font: { size: 11 } }
+      }
+    }
+  }
+});
+
+// Chart 5: Digital Channel Adoption
+new Chart(document.getElementById('channelChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Branch Banking', 'BC Agent / AEPS', 'UPI Mobile', 'Mobile Banking App', 'Internet Banking', 'ATM / Micro-ATM', 'USSD *99#'],
+    datasets: [{
+      data: [38, 28, 14, 8, 4, 6, 2],
+      backgroundColor: ['#1f5438', '#00a86b', '#00d48a', '#00b8d4', '#8b5cf6', '#d4820a', '#e55'],
+      borderWidth: 3, borderColor: 'white'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { usePointStyle: true, padding: 14, font: { size: 11 } } }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
